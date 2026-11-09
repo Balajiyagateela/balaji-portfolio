@@ -31,49 +31,49 @@ export const personalDetails = {
 
 export const introduction = {
   headline: "Python Backend Developer",
-  supportingHeadline: "Building Reliable, High-Performance Microservices with Python and FastAPI.",
-  summary: "Backend developer with approximately 1 year of professional experience building RESTful APIs and microservices using Python and FastAPI. Skilled in designing PostgreSQL-backed services with 30+ API endpoints, writing 280+ automated tests with Pytest, and integrating Apache Kafka, Redis, and Docker into production-ready microservice architectures. Experienced in JWT authentication, role-based access control (RBAC), and OpenAPI contract-driven development.",
+  supportingHeadline: "Building Reliable Backend Applications with Python and FastAPI.",
+  summary: "I am a Python Backend Developer with approximately one year of professional experience, focused on developing REST APIs, backend applications, and database-driven solutions. My primary technical focus is Python, FastAPI, and PostgreSQL. I have practical experience with API development, database integration, backend business logic, service communication, and asynchronous processing. I also have additional knowledge of JavaScript, React.js, Node.js, and Express.js.",
   animatedKeywords: [
-    "FastAPI Microservices",
+    "FastAPI & REST APIs",
     "PostgreSQL & SQLAlchemy",
-    "Kafka Event Streaming",
+    "Apache Kafka Streaming",
     "Redis Caching Layers",
-    "Docker Containerization",
-    "Pytest CI Pipelines",
-    "RESTful API Architecture",
+    "Docker Containers",
+    "Pytest Automated Testing",
+    "Backend Microservices",
   ],
   focusPillars: [
-    { title: "FastAPI & REST APIs", desc: "OpenAPI contract-driven design with strict Pydantic schemas and error boundaries." },
-    { title: "PostgreSQL & ACID", desc: "15+ normalized relational tables, Alembic migrations, and optimistic concurrency locking." },
-    { title: "Event Streaming", desc: "Apache Kafka consumer groups for distributed, asynchronous message processing." },
-    { title: "In-Memory Caching", desc: "Redis cache invalidation strategies minimizing expensive database query cycles." },
+    { title: "FastAPI & REST APIs", desc: "Contract-driven REST API design with strict Pydantic schemas, validation, and error boundaries." },
+    { title: "PostgreSQL & Database Design", desc: "Relational schema modeling, 15+ normalized tables, Alembic migrations, and ACID consistency." },
+    { title: "Event-Driven Architecture", desc: "Apache Kafka consumer groups for decoupled, asynchronous message processing across services." },
+    { title: "In-Memory Caching", desc: "Redis caching layers minimizing database load and boosting response throughput." },
   ]
 };
 
 export const skillsData = [
   {
-    category: "Languages",
-    description: "Core languages for backend logic, system programming, and database queries.",
+    category: "Programming Languages",
+    description: "Core languages used for backend logic, database operations, and system automation.",
     skills: [
       { name: "Python", isCore: true },
-      { name: "SQL", isCore: true },
       { name: "JavaScript", isCore: false },
+      { name: "SQL", isCore: true },
     ],
   },
   {
     category: "Backend Development",
-    description: "Frameworks, ORMs, and runtimes for scalable RESTful APIs and microservices.",
+    description: "Frameworks, libraries, and runtimes used to design and implement robust APIs.",
     skills: [
+      { name: "Python", isCore: true },
       { name: "FastAPI", isCore: true },
-      { name: "REST APIs", isCore: true },
-      { name: "Pydantic", isCore: true },
-      { name: "SQLAlchemy ORM", isCore: true },
+      { name: "REST API Development", isCore: true },
       { name: "Node.js", isCore: false },
+      { name: "Express.js", isCore: false },
     ],
   },
   {
     category: "Databases",
-    description: "Relational and document storage engines with ACID transaction safety.",
+    description: "Relational and document database systems for secure, high-integrity data storage.",
     skills: [
       { name: "PostgreSQL", isCore: true },
       { name: "MongoDB", isCore: false },
@@ -82,50 +82,34 @@ export const skillsData = [
     ],
   },
   {
-    category: "Messaging & Caching",
-    description: "Distributed pub/sub event streams and high-speed in-memory caching.",
+    category: "Backend Technologies & Tools",
+    description: "Distributed message streaming, caching, ORM layers, and container tooling.",
     skills: [
       { name: "Apache Kafka", isCore: true },
       { name: "Redis", isCore: true },
-    ],
-  },
-  {
-    category: "Auth & Security",
-    description: "Identity verification, token lifecycles, and access control boundaries.",
-    skills: [
-      { name: "JWT (JSON Web Tokens)", isCore: true },
-      { name: "RBAC (Role-Based Access)", isCore: true },
-      { name: "API Key Authentication", isCore: true },
-    ],
-  },
-  {
-    category: "Testing & API Tools",
-    description: "Contract testing, unit testing suites, and interactive API documentation.",
-    skills: [
-      { name: "Pytest (280+ Tests)", isCore: true },
-      { name: "Postman", isCore: true },
-      { name: "Swagger / OpenAPI", isCore: true },
-    ],
-  },
-  {
-    category: "DevOps & Tools",
-    description: "Version control, database migrations, containerization, and developer environments.",
-    skills: [
       { name: "Docker", isCore: true },
+      { name: "SQLAlchemy", isCore: true },
+      { name: "Pydantic", isCore: true },
+      { name: "Pytest", isCore: true },
+    ],
+  },
+  {
+    category: "Tools & Environment",
+    description: "Developer tooling for version control, API testing, and code development.",
+    skills: [
       { name: "Git", isCore: true },
       { name: "GitHub", isCore: true },
-      { name: "Alembic", isCore: true },
-      { name: "Visual Studio Code", isCore: false },
+      { name: "Postman", isCore: true },
+      { name: "VS Code", isCore: true },
     ],
   },
   {
     category: "Frontend (Supporting)",
-    description: "Working frontend knowledge utilized for full-stack integration and building this portfolio.",
+    description: "Supporting frontend knowledge utilized for full-stack integration and this portfolio application.",
     skills: [
       { name: "React.js", isCore: false },
       { name: "HTML5", isCore: false },
       { name: "CSS3", isCore: false },
-      { name: "Tailwind CSS", isCore: false },
     ],
   },
 ];

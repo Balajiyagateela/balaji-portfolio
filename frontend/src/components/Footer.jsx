@@ -14,9 +14,8 @@ export default function Footer() {
     { name: 'Home', href: '#home' },
     { name: 'About', href: '#about' },
     { name: 'Skills', href: '#skills' },
-    { name: 'Experience', href: '#experience' },
     { name: 'Projects', href: '#projects' },
-    { name: 'Education', href: '#education' },
+    { name: 'Experience', href: '#experience' },
     { name: 'Contact', href: '#contact' },
   ];
 
@@ -32,14 +31,14 @@ export default function Footer() {
   };
 
   return (
-    <footer className={`border-t transition-colors duration-300 py-14 ${
+    <footer className={`border-t transition-colors duration-300 py-12 ${
       isDark ? 'bg-[#02050c] border-blue-950/60 text-slate-400' : 'bg-slate-100 border-slate-200 text-slate-600'
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-10 border-b border-slate-200/60 dark:border-slate-800/80">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-8 border-b border-slate-200/60 dark:border-slate-800/80">
           
           {/* Identity Column */}
-          <div className="md:col-span-5 space-y-3">
+          <div className="md:col-span-6 space-y-3">
             <div className="flex items-center gap-2.5">
               <div className="p-1.5 rounded-lg bg-blue-600/20 text-blue-500 border border-blue-500/30">
                 <Terminal className="w-4 h-4" />
@@ -51,21 +50,22 @@ export default function Footer() {
                 Python Backend Developer
               </span>
             </div>
-            <p className="text-xs leading-relaxed max-w-sm">
-              Focused on reliable backend microservices, FastAPI REST APIs, PostgreSQL, and asynchronous Kafka streaming.
+            <p className="text-xs leading-relaxed max-w-md">
+              Specialized in developing resilient REST APIs, microservices, and database-driven solutions with Python, FastAPI, and PostgreSQL.
             </p>
-            <div className="pt-1 text-xs font-mono text-slate-500 space-y-1">
-              <div>{personalDetails.location}</div>
-              <div>{personalDetails.email}</div>
+            <div className="pt-1 text-xs font-mono text-slate-500 flex flex-wrap gap-4">
+              <span>{personalDetails.location}</span>
+              <span>•</span>
+              <span>{personalDetails.email}</span>
             </div>
           </div>
 
-          {/* Quick Navigation Links */}
-          <div className="md:col-span-4 space-y-2">
-            <span className={`text-xs font-mono uppercase tracking-wider font-bold block mb-3 ${
+          {/* Quick Navigation Links (Exact 6 items) */}
+          <div className="md:col-span-3 space-y-2">
+            <span className={`text-xs font-mono uppercase tracking-wider font-bold block mb-2.5 ${
               isDark ? 'text-slate-300' : 'text-slate-700'
             }`}>
-              Quick Navigation
+              Navigation
             </span>
             <div className="grid grid-cols-2 gap-2 text-xs font-mono">
               {navLinks.map((link) => (
@@ -83,7 +83,7 @@ export default function Footer() {
 
           {/* Social Links & Back to Top */}
           <div className="md:col-span-3 space-y-3 md:text-right">
-            <span className={`text-xs font-mono uppercase tracking-wider font-bold block mb-3 ${
+            <span className={`text-xs font-mono uppercase tracking-wider font-bold block mb-2.5 ${
               isDark ? 'text-slate-300' : 'text-slate-700'
             }`}>
               Connect

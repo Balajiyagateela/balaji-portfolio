@@ -175,7 +175,7 @@ export default function Contact() {
         <div className="max-w-3xl mb-14">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-600/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 text-xs font-mono font-semibold mb-3">
             <Terminal className="w-3.5 h-3.5" />
-            <span>06 // GET IN TOUCH</span>
+            <span>05 // GET IN TOUCH</span>
           </div>
           <h2 className={`text-3xl sm:text-4xl font-extrabold tracking-tight ${
             isDark ? 'text-white' : 'text-slate-900'
