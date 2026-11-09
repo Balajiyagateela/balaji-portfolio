@@ -301,3 +301,4 @@ export const educationData = [
     details: "Strong coursework in Data Structures, Algorithms, Relational Database Systems, Operating Systems, Computer Networks, and Object-Oriented Software Engineering.",
   },
 ];
+

@@ -56,3 +56,4 @@ export default function Toast({ type = 'info', message, onClose, duration = 6000
     </div>
   );
 }
+

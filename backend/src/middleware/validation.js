@@ -78,3 +78,4 @@ const validateContactInput = (req, res, next) => {
 module.exports = {
   validateContactInput,
 };
+

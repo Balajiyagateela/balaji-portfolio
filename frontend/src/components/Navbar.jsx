@@ -14,7 +14,7 @@ const navLinks = [
   { name: 'Contact', href: '#contact' },
 ];
 
-export default function Navbar() {
+export default function Navbar({ onOpenResume }) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [backendHealth, setBackendHealth] = useState({ checked: false, online: false });
@@ -114,6 +114,13 @@ export default function Navbar() {
               </span>
             </div>
 
+            <button
+              onClick={onOpenResume}
+              className="px-3.5 py-2 text-xs font-mono font-medium text-slate-300 hover:text-white bg-slate-900 hover:bg-slate-800 border border-slate-700/80 rounded-lg transition-colors flex items-center gap-1.5"
+            >
+              <span>Resume</span>
+            </button>
+
             <a
               href="#contact"
               className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-500 rounded-lg transition-colors shadow-sm shadow-blue-500/20 flex items-center gap-1.5"
@@ -162,7 +169,13 @@ export default function Navbar() {
             </a>
           ))}
 
-          <div className="pt-3">
+          <div className="pt-3 space-y-2">
+            <button
+              onClick={() => { setIsOpen(false); onOpenResume?.(); }}
+              className="block w-full text-center px-4 py-2.5 text-xs font-mono font-medium text-slate-200 bg-slate-900 border border-slate-700 hover:bg-slate-800 rounded-lg"
+            >
+              View / Print Resume
+            </button>
             <a
               href="#contact"
               onClick={() => setIsOpen(false)}
@@ -176,3 +189,4 @@ export default function Navbar() {
     </header>
   );
 }
+

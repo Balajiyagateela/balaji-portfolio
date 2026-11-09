@@ -69,3 +69,4 @@ Receives contact inquiry and dispatches an email via SMTP.
    npm run dev
    # Server will start on http://localhost:5000
    ```
+

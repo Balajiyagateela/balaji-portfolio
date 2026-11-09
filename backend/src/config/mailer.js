@@ -53,3 +53,4 @@ module.exports = {
   getTransporter,
   receiverEmail: process.env.CONTACT_RECEIVER_EMAIL || 'rajbalajiyagateela@gmail.com',
 };
+

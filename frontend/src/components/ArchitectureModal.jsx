@@ -144,3 +144,4 @@ export default function ArchitectureModal({ isOpen, onClose, project }) {
     </div>
   );
 }
+

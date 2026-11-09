@@ -6,7 +6,7 @@ export default function Education() {
   return (
     <section id="education" className="py-20 relative bg-[#0a0d14] border-t border-slate-800/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         {/* Section Header */}
         <div className="max-w-3xl mb-12">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-mono mb-3">
@@ -75,3 +75,4 @@ export default function Education() {
     </section>
   );
 }
+

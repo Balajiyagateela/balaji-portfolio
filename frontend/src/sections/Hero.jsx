@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import { personalDetails, introduction } from '../data/portfolioData';
 
-export default function Hero() {
+export default function Hero({ onOpenResume }) {
   const [copied, setCopied] = useState(false);
 
   const copyEmail = () => {
@@ -71,9 +71,16 @@ export default function Hero() {
                 <ArrowRight className="w-4 h-4" />
               </a>
 
+              <button
+                onClick={onOpenResume}
+                className="px-5 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 font-medium text-sm flex items-center gap-2 transition-all font-mono"
+              >
+                <span>View Resume</span>
+              </button>
+
               <a
                 href="#contact"
-                className="px-6 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 font-medium text-sm transition-all"
+                className="px-5 py-3.5 rounded-xl bg-slate-900/60 hover:bg-slate-800 text-slate-300 border border-slate-800 font-medium text-sm transition-all"
               >
                 Contact Me
               </a>
@@ -208,3 +215,4 @@ export default function Hero() {
     </section>
   );
 }
+
