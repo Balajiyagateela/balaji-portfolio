@@ -236,3 +236,4 @@ Institution: ${educationData[0].institution} (${educationData[0].year})
     </div>
   );
 }
+
