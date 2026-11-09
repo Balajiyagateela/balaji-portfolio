@@ -1,21 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
-  Terminal, 
   ArrowRight, 
   Github, 
   Linkedin, 
   Mail, 
   Copy, 
   Check, 
-  FileCode2, 
+  Terminal, 
   Database, 
+  Server, 
+  Cpu, 
   Layers, 
-  Cpu 
+  ShieldCheck 
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { personalDetails, introduction } from '../data/portfolioData';
+import { useTheme } from '../context/ThemeContext';
 
 export default function Hero({ onOpenResume }) {
+  const { isDark } = useTheme();
   const [copied, setCopied] = useState(false);
+  const [keywordIndex, setKeywordIndex] = useState(0);
+
+  // Cycling animated keywords
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setKeywordIndex((prev) => (prev + 1) % introduction.animatedKeywords.length);
+    }, 2800);
+    return () => clearInterval(timer);
+  }, []);
 
   const copyEmail = () => {
     navigator.clipboard.writeText(personalDetails.email);
@@ -23,196 +36,251 @@ export default function Hero({ onOpenResume }) {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const handleScroll = (id) => {
+    const el = document.getElementById(id);
+    if (el) {
+      const yOffset = -80;
+      const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  };
+
   return (
-    <section id="home" className="relative min-h-[92vh] flex items-center pt-24 pb-16 overflow-hidden">
-      {/* Background Gradients */}
-      <div className="absolute inset-0 bg-radial-gradient pointer-events-none" />
-      <div className="absolute inset-0 bg-radial-glow pointer-events-none" />
-      <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
+    <section 
+      id="home" 
+      className={`relative min-h-[92vh] flex items-center pt-28 pb-16 overflow-hidden transition-colors duration-300 ${
+        isDark ? 'bg-[#030712] bg-tech-grid-dark' : 'bg-slate-50 bg-tech-grid-light'
+      }`}
+    >
+      {/* Background Radial Glows */}
+      <div className="absolute inset-0 radial-glow-blue pointer-events-none" />
+      <div className="absolute inset-0 radial-glow-royal pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           
-          {/* Left Column: Hero Text & Identity */}
-          <div className="lg:col-span-7 space-y-6">
-            
+          {/* Left Column: Heading, Animated Keywords, Intro, CTAs */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="lg:col-span-7 space-y-6"
+          >
             {/* Status Pill */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-slate-800 text-xs text-slate-300 shadow-inner">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="font-mono text-emerald-400 font-medium">status:</span>
-              <span>Python & Backend Engineering</span>
+            <div className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-mono border shadow-sm ${
+              isDark 
+                ? 'bg-slate-900/90 border-blue-900/40 text-slate-300' 
+                : 'bg-white border-blue-200 text-slate-700 shadow-blue-500/5'
+            }`}>
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-blue-500 dark:text-blue-400 font-semibold">ROLE:</span>
+              <span className="font-medium">{personalDetails.role}</span>
+              <span className="text-slate-400 dark:text-slate-600">•</span>
+              <span className="text-slate-500 dark:text-slate-400">{personalDetails.company}</span>
             </div>
 
             {/* Main Headline */}
-            <div className="space-y-3">
-              <div className="text-sm font-mono text-blue-400 tracking-wider uppercase font-semibold">
+            <div className="space-y-2">
+              <div className="text-sm font-mono text-blue-600 dark:text-blue-400 tracking-wider uppercase font-semibold">
                 Hi, I'm {personalDetails.name}
               </div>
-              <h1 className="text-4xl sm:text-5xl xl:text-6xl font-extrabold text-white tracking-tight leading-tight">
-                {introduction.headline}
+              <h1 className={`text-4xl sm:text-5xl xl:text-6xl font-extrabold tracking-tight leading-tight ${
+                isDark ? 'text-white' : 'text-slate-900'
+              }`}>
+                Python Backend <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-blue-400 to-indigo-400">Developer</span>
               </h1>
-              <p className="text-xl sm:text-2xl font-medium text-slate-300 leading-snug">
-                {introduction.supportingHeadline}
-              </p>
             </div>
 
-            {/* Quick Context Summary */}
-            <p className="text-base text-slate-400 max-w-2xl leading-relaxed">
-              Specialized in developing REST APIs, backend microservices, and database-driven solutions with <span className="text-slate-200 font-medium">Python</span>, <span className="text-slate-200 font-medium">FastAPI</span>, and <span className="text-slate-200 font-medium">PostgreSQL</span>. Experienced with asynchronous event processing using <span className="text-slate-200 font-medium">Apache Kafka</span> and caching via <span className="text-slate-200 font-medium">Redis</span>.
+            {/* Animated Technology Keywords */}
+            <div className="flex items-center gap-2.5 h-10 font-mono text-base sm:text-lg">
+              <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>Specializing in</span>
+              <div className="relative overflow-hidden py-1">
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={keywordIndex}
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -20, opacity: 0 }}
+                    transition={{ duration: 0.35, ease: 'easeInOut' }}
+                    className="inline-block font-bold text-blue-600 dark:text-blue-400 underline decoration-blue-500/50 underline-offset-4"
+                  >
+                    {introduction.animatedKeywords[keywordIndex]}
+                  </motion.span>
+                </AnimatePresence>
+              </div>
+            </div>
+
+            {/* Clear Introduction from Resume */}
+            <p className={`text-base sm:text-lg leading-relaxed max-w-2xl ${
+              isDark ? 'text-slate-300' : 'text-slate-700'
+            }`}>
+              {introduction.summary}
             </p>
 
-            {/* Primary Action Buttons */}
-            <div className="flex flex-wrap items-center gap-4 pt-2">
-              <a
-                href="#projects"
-                className="px-6 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-medium text-sm flex items-center gap-2 shadow-lg shadow-blue-600/20 hover:shadow-blue-600/30 transition-all"
+            {/* Action Buttons: View Projects, Contact Me, Resume */}
+            <div className="flex flex-wrap items-center gap-3.5 pt-2">
+              <button
+                onClick={() => handleScroll('projects')}
+                className="px-6 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm flex items-center gap-2 shadow-lg shadow-blue-600/30 hover:shadow-blue-600/40 transition-all cursor-pointer"
               >
-                <span>View Backend Projects</span>
+                <span>View Projects</span>
                 <ArrowRight className="w-4 h-4" />
-              </a>
+              </button>
+
+              <button
+                onClick={() => handleScroll('contact')}
+                className={`px-6 py-3.5 rounded-xl font-semibold text-sm transition-all border cursor-pointer ${
+                  isDark
+                    ? 'bg-slate-900/80 hover:bg-slate-800 text-white border-blue-900/40 hover:border-blue-500/50'
+                    : 'bg-white hover:bg-slate-100 text-slate-800 border-slate-300 shadow-sm'
+                }`}
+              >
+                Contact Me
+              </button>
 
               <button
                 onClick={onOpenResume}
-                className="px-5 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 font-medium text-sm flex items-center gap-2 transition-all font-mono"
+                className={`px-5 py-3.5 rounded-xl font-mono text-xs font-medium transition-all border cursor-pointer ${
+                  isDark
+                    ? 'bg-blue-950/30 hover:bg-blue-900/30 text-blue-300 border-blue-800/40'
+                    : 'bg-blue-50 hover:bg-blue-100 text-blue-700 border-blue-200'
+                }`}
               >
-                <span>View Resume</span>
+                View Full Resume
               </button>
 
-              <a
-                href="#contact"
-                className="px-5 py-3.5 rounded-xl bg-slate-900/60 hover:bg-slate-800 text-slate-300 border border-slate-800 font-medium text-sm transition-all"
-              >
-                Contact Me
-              </a>
-
-              {/* Copy Email Fast Action */}
+              {/* Fast Copy Email Action */}
               <button
                 onClick={copyEmail}
-                className="px-4 py-3.5 rounded-xl bg-slate-900/60 hover:bg-slate-800 text-slate-300 border border-slate-800 text-sm font-mono flex items-center gap-2 transition-all"
+                className={`px-3.5 py-3.5 rounded-xl text-xs font-mono flex items-center gap-1.5 transition-all border cursor-pointer ${
+                  isDark
+                    ? 'bg-slate-900/60 hover:bg-slate-800 text-slate-400 border-slate-800 hover:text-white'
+                    : 'bg-white hover:bg-slate-100 text-slate-600 border-slate-200'
+                }`}
                 title="Copy email to clipboard"
               >
                 {copied ? (
                   <>
                     <Check className="w-4 h-4 text-emerald-400" />
-                    <span className="text-emerald-400">Copied!</span>
+                    <span className="text-emerald-400 font-semibold">Copied!</span>
                   </>
                 ) : (
                   <>
-                    <Copy className="w-4 h-4 text-slate-400" />
-                    <span className="hidden sm:inline">rajbalajiyagateela@gmail.com</span>
-                    <span className="sm:hidden">Copy Email</span>
+                    <Copy className="w-4 h-4" />
+                    <span className="hidden sm:inline">{personalDetails.email}</span>
                   </>
                 )}
               </button>
             </div>
 
-            {/* Social Links & Trust Indicators */}
-            <div className="flex items-center gap-6 pt-4 border-t border-slate-800/80 text-xs text-slate-400">
-              <div className="flex items-center gap-3">
-                <a
-                  href={personalDetails.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 text-slate-300 hover:text-white transition-colors"
-                >
-                  <Github className="w-4 h-4" />
-                  <span>GitHub</span>
-                </a>
-                <span className="text-slate-700">•</span>
-                <a
-                  href={personalDetails.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 text-slate-300 hover:text-white transition-colors"
-                >
-                  <Linkedin className="w-4 h-4" />
-                  <span>LinkedIn</span>
-                </a>
-              </div>
+            {/* Social Proof Links */}
+            <div className={`flex items-center gap-6 pt-4 border-t text-xs font-mono ${
+              isDark ? 'border-slate-800/80 text-slate-400' : 'border-slate-200 text-slate-600'
+            }`}>
+              <a
+                href={personalDetails.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 hover:text-blue-500 transition-colors font-medium"
+              >
+                <Github className="w-4 h-4" />
+                <span>github.com/Balajiyagateela</span>
+              </a>
 
-              <div className="hidden sm:flex items-center gap-2 text-slate-400 font-mono text-[11px]">
-                <span className="text-slate-600">Company:</span>
-                <span className="text-slate-300">{personalDetails.company}</span>
-              </div>
+              <span className="opacity-40">•</span>
+
+              <a
+                href={personalDetails.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 hover:text-blue-500 transition-colors font-medium"
+              >
+                <Linkedin className="w-4 h-4 text-blue-500" />
+                <span>LinkedIn Profile</span>
+              </a>
             </div>
 
-          </div>
+          </motion.div>
 
-          {/* Right Column: Interactive Backend Terminal Mockup */}
-          <div className="lg:col-span-5">
-            <div className="rounded-2xl bg-[#0b0f19] border border-slate-800 shadow-2xl overflow-hidden">
-              {/* Terminal Titlebar */}
-              <div className="flex items-center justify-between px-4 py-3 bg-slate-900/80 border-b border-slate-800">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-rose-500/80" />
-                  <div className="w-3 h-3 rounded-full bg-amber-500/80" />
-                  <div className="w-3 h-3 rounded-full bg-emerald-500/80" />
-                </div>
-                <div className="text-xs font-mono text-slate-400 flex items-center gap-1.5">
-                  <FileCode2 className="w-3.5 h-3.5 text-blue-400" />
-                  <span>uvicorn main:app --reload</span>
-                </div>
-                <div className="w-10" />
-              </div>
+          {/* Right Column: Professional Portrait Frame with Blue Glow */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="lg:col-span-5 flex justify-center lg:justify-end"
+          >
+            <div className="relative w-full max-w-[340px] sm:max-w-[380px]">
+              
+              {/* Outer Glowing Rings */}
+              <div className="absolute -inset-1.5 rounded-3xl bg-gradient-to-tr from-blue-600 via-indigo-500 to-cyan-400 opacity-70 blur-xl animate-pulse-slow" />
+              <div className="absolute -inset-0.5 rounded-3xl bg-gradient-to-b from-blue-500 via-blue-600 to-indigo-700 opacity-60" />
 
-              {/* Terminal Code & Log Stream */}
-              <div className="p-5 font-mono text-xs text-slate-300 space-y-3 leading-relaxed bg-[#090d16]">
-                <div>
-                  <span className="text-slate-500">$ </span>
-                  <span className="text-blue-400">python</span> -m venv .venv && source .venv/bin/activate
-                </div>
-                <div>
-                  <span className="text-slate-500">$ </span>
-                  <span className="text-emerald-400">uvicorn</span> app.main:app --host 0.0.0.0 --port 8000
-                </div>
+              {/* Main Photo Card Container */}
+              <div className={`relative rounded-3xl overflow-hidden border shadow-2xl p-2 ${
+                isDark 
+                  ? 'bg-[#080d1a] border-blue-500/40 shadow-[0_0_50px_-10px_rgba(37,99,235,0.4)]' 
+                  : 'bg-white border-blue-200 shadow-xl shadow-blue-500/10'
+              }`}>
+                {/* Photo Element (Original Uploaded Photo - Unmodified Face & Structure) */}
+                <div className="relative rounded-2xl overflow-hidden bg-slate-950 aspect-[3/4]">
+                  <img
+                    src={personalDetails.photoUrl}
+                    alt={`${personalDetails.fullName} - Python Backend Developer`}
+                    className="w-full h-full object-cover object-top transition-transform duration-700 hover:scale-105"
+                    loading="eager"
+                  />
+                  {/* Subtle Gradient Overlay at the base for contrast */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
 
-                <div className="pt-2 text-[11px] text-slate-400 space-y-1 border-t border-slate-800/80">
-                  <p className="text-slate-500">INFO: Started server process [PID 4120]</p>
-                  <p className="text-slate-500">INFO: Waiting for application startup.</p>
-                  <p className="text-emerald-400">INFO: PostgreSQL connection pool initialized.</p>
-                  <p className="text-violet-400">INFO: Kafka consumer joined group 'inventory-sync'.</p>
-                  <p className="text-amber-400">INFO: Redis cache client connected.</p>
-                  <p className="text-slate-300">INFO: Application startup complete. [Docs: /docs]</p>
-                </div>
-
-                {/* Simulated API Endpoint Request */}
-                <div className="mt-3 p-3 rounded-lg bg-slate-950 border border-slate-800/80 text-[11px]">
-                  <div className="text-slate-400 mb-1 flex items-center justify-between">
-                    <span>GET /api/v1/inventory/items</span>
-                    <span className="text-emerald-400 font-bold">200 OK (14ms)</span>
+                  {/* Overlay Badge at Bottom of Photo */}
+                  <div className="absolute bottom-3 left-3 right-3 p-3 rounded-xl bg-slate-950/85 backdrop-blur-md border border-blue-500/30 text-white shadow-lg">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <div className="text-xs font-bold tracking-tight text-white flex items-center gap-1.5">
+                          <span>{personalDetails.fullName}</span>
+                          <span className="w-2 h-2 rounded-full bg-blue-400" />
+                        </div>
+                        <div className="text-[11px] font-mono text-blue-400 font-medium">
+                          Speshway Solutions Pvt. Ltd.
+                        </div>
+                      </div>
+                      <div className="text-right font-mono text-[10px] text-slate-300">
+                        <span className="px-2 py-0.5 rounded bg-blue-600/30 border border-blue-500/40 text-blue-300">
+                          Dec 2025 – Present
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                  <pre className="text-slate-300 overflow-x-auto text-[10px]">
-{`{
-  "status": "success",
-  "role": "Python Backend Developer",
-  "developer": "Balaji Yagateela",
-  "tech_stack": ["FastAPI", "Postgres", "Kafka", "Redis"]
-}`}
-                  </pre>
                 </div>
+
+                {/* Floating Architectural Spec Pills */}
+                <div className="grid grid-cols-2 gap-2 mt-2 px-1 text-center font-mono text-[11px]">
+                  <div className={`p-2 rounded-xl border flex items-center justify-center gap-1.5 ${
+                    isDark 
+                      ? 'bg-slate-900/90 border-slate-800 text-slate-300' 
+                      : 'bg-slate-50 border-slate-200 text-slate-700'
+                  }`}>
+                    <Server className="w-3.5 h-3.5 text-blue-500" />
+                    <span>FastAPI & REST</span>
+                  </div>
+
+                  <div className={`p-2 rounded-xl border flex items-center justify-center gap-1.5 ${
+                    isDark 
+                      ? 'bg-slate-900/90 border-slate-800 text-slate-300' 
+                      : 'bg-slate-50 border-slate-200 text-slate-700'
+                  }`}>
+                    <Database className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>PostgreSQL & Kafka</span>
+                  </div>
+                </div>
+
               </div>
 
-              {/* Terminal Quick Specs Footer */}
-              <div className="px-4 py-3 bg-slate-900/50 border-t border-slate-800 flex items-center justify-between text-[11px] font-mono text-slate-400">
-                <span className="flex items-center gap-1.5">
-                  <Cpu className="w-3.5 h-3.5 text-blue-400" />
-                  <span>Python 3.10+</span>
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <Database className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>PostgreSQL</span>
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <Layers className="w-3.5 h-3.5 text-violet-400" />
-                  <span>Kafka</span>
-                </span>
-              </div>
             </div>
-          </div>
+          </motion.div>
 
         </div>
       </div>
     </section>
   );
 }
-

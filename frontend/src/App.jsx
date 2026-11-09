@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
+import { ThemeProvider } from './context/ThemeContext';
 import Navbar from './components/Navbar';
 import Hero from './sections/Hero';
 import About from './sections/About';
 import Skills from './sections/Skills';
-import BackendKnowledge from './sections/BackendKnowledge';
-import Projects from './sections/Projects';
 import Experience from './sections/Experience';
+import Projects from './sections/Projects';
 import Education from './sections/Education';
 import Contact from './sections/Contact';
 import Footer from './components/Footer';
@@ -15,30 +15,32 @@ export default function App() {
   const [isResumeOpen, setIsResumeOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#080b11] text-slate-100 flex flex-col font-sans selection:bg-blue-600 selection:text-white">
-      {/* Top Fixed Navigation */}
-      <Navbar onOpenResume={() => setIsResumeOpen(true)} />
+    <ThemeProvider>
+      <div className="min-h-screen font-sans selection:bg-blue-600 selection:text-white transition-colors duration-300">
+        {/* Top Sticky Navigation */}
+        <Navbar onOpenResume={() => setIsResumeOpen(true)} />
 
-      {/* Main Portfolio Sections */}
-      <main className="flex-grow">
-        <Hero onOpenResume={() => setIsResumeOpen(true)} />
-        <About />
-        <Skills />
-        <BackendKnowledge />
-        <Projects />
-        <Experience />
-        <Education />
-        <Contact />
-      </main>
+        {/* Portfolio Sections in Exact Sequence:
+            Home -> About -> Skills -> Experience -> Projects -> Education -> Contact */}
+        <main className="flex-grow">
+          <Hero onOpenResume={() => setIsResumeOpen(true)} />
+          <About />
+          <Skills />
+          <Experience />
+          <Projects />
+          <Education />
+          <Contact />
+        </main>
 
-      {/* Bottom Footer */}
-      <Footer />
+        {/* Footer */}
+        <Footer />
 
-      {/* Printable / Viewable Resume Modal */}
-      <ResumeModal
-        isOpen={isResumeOpen}
-        onClose={() => setIsResumeOpen(false)}
-      />
-    </div>
+        {/* Printable / Viewable Resume Modal */}
+        <ResumeModal
+          isOpen={isResumeOpen}
+          onClose={() => setIsResumeOpen(false)}
+        />
+      </div>
+    </ThemeProvider>
   );
 }
