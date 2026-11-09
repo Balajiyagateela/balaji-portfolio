@@ -1,39 +1,32 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { 
-  ArrowRight, 
+  Send, 
+  Download, 
   Github, 
   Linkedin, 
-  Mail, 
-  Copy, 
-  Check, 
-  Terminal, 
-  Database, 
   Server, 
-  Cpu, 
-  Layers, 
-  ShieldCheck,
-  Send
+  Database,
+  ArrowRight
 } from 'lucide-react';
-import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { personalDetails, introduction } from '../data/portfolioData';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { personalDetails, heroContent } from '../data/portfolioData';
 import { useTheme } from '../context/ThemeContext';
 
 export default function Hero() {
   const { isDark } = useTheme();
-  const [copied, setCopied] = useState(false);
-  const [keywordIndex, setKeywordIndex] = useState(0);
 
-  // 3D Tilt effect tracking for desktop portrait card
+  // Subtle 3D Tilt effect tracking for desktop portrait card
   const cardRef = useRef(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const mouseXSpring = useSpring(x, { stiffness: 180, damping: 20 });
   const mouseYSpring = useSpring(y, { stiffness: 180, damping: 20 });
-  const rotateX = useTransform(mouseYSpring, [-150, 150], [8, -8]);
-  const rotateY = useTransform(mouseXSpring, [-150, 150], [-8, 8]);
+  const rotateX = useTransform(mouseYSpring, [-150, 150], [6, -6]);
+  const rotateY = useTransform(mouseXSpring, [-150, 150], [-6, 6]);
 
   const handleMouseMove = (e) => {
-    if (!cardRef.current) return;
+    // Disable 3D tilt on touch screens or small viewports
+    if (window.innerWidth < 768 || !cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
     const mouseX = e.clientX - rect.left - rect.width / 2;
     const mouseY = e.clientY - rect.top - rect.height / 2;
@@ -46,24 +39,11 @@ export default function Hero() {
     y.set(0);
   };
 
-  // Cycling animated keywords
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setKeywordIndex((prev) => (prev + 1) % introduction.animatedKeywords.length);
-    }, 2800);
-    return () => clearInterval(timer);
-  }, []);
-
-  const copyEmail = () => {
-    navigator.clipboard.writeText(personalDetails.email);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  const handleScroll = (id) => {
-    const el = document.getElementById(id);
+  const handleScrollToContact = (e) => {
+    e.preventDefault();
+    const el = document.getElementById('contact');
     if (el) {
-      const yOffset = -80;
+      const yOffset = -76;
       const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
       window.scrollTo({ top: y, behavior: 'smooth' });
     }
@@ -72,121 +52,92 @@ export default function Hero() {
   return (
     <section 
       id="home" 
-      className={`relative min-h-[92vh] flex items-center pt-28 pb-16 overflow-hidden transition-colors duration-300 ${
-        isDark ? 'bg-[#030712] bg-tech-grid-dark' : 'bg-slate-50 bg-tech-grid-light'
+      className={`relative min-h-[90vh] flex items-center pt-24 sm:pt-28 pb-16 overflow-hidden transition-colors ${
+        isDark ? 'bg-[#0B0F17] bg-grid-subtle-dark' : 'bg-[#F3F4F6] bg-grid-subtle-light'
       }`}
     >
-      {/* Background Subtle Radial Glows */}
-      <div className="absolute inset-0 radial-glow-blue pointer-events-none" />
-      <div className="absolute inset-0 radial-glow-royal pointer-events-none" />
+      {/* Restrained subtle ambient accent */}
+      <div className="absolute inset-0 spot-emerald pointer-events-none" />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+      <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
-          {/* Left Column: Heading, Supporting Line, Animated Keywords, Intro, Contact CTA */}
+          {/* Left Column: Heading, Subtitle, Supporting text, CTAs */}
           <motion.div 
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-7 space-y-6"
           >
-            {/* Status Pill */}
-            <div className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-mono border shadow-sm ${
+            {/* Context Pill */}
+            <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono border transition-colors ${
               isDark 
-                ? 'bg-slate-900/90 border-blue-900/40 text-slate-300' 
-                : 'bg-white border-blue-200 text-slate-700 shadow-blue-500/5'
+                ? 'bg-[#161B22] border-[#30363D] text-[#94A3B8]' 
+                : 'bg-white border-[#E2E8F0] text-[#475569] shadow-sm'
             }`}>
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-blue-500 dark:text-blue-400 font-semibold">ROLE:</span>
-              <span className="font-medium">{personalDetails.role}</span>
-              <span className="text-slate-400 dark:text-slate-600">•</span>
-              <span className="text-slate-500 dark:text-slate-400">{personalDetails.company}</span>
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>{personalDetails.role}</span>
+              <span className="opacity-40">•</span>
+              <span>{personalDetails.company}</span>
             </div>
 
-            {/* Main Headline & Supporting Headline */}
+            {/* Professional Headline & Subtitle */}
             <div className="space-y-3">
-              <div className="text-sm font-mono text-blue-600 dark:text-blue-400 tracking-wider uppercase font-semibold">
-                Hi, I'm {personalDetails.name}
-              </div>
-              <h1 className={`text-4xl sm:text-5xl xl:text-6xl font-extrabold tracking-tight leading-tight ${
-                isDark ? 'text-white' : 'text-slate-900'
+              <h1 className={`text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1] ${
+                isDark ? 'text-[#E5E7EB]' : 'text-[#0F172A]'
               }`}>
-                {introduction.headline}
+                {heroContent.headline}
               </h1>
-              <p className="text-lg sm:text-xl font-medium text-blue-600 dark:text-blue-400">
-                {introduction.supportingHeadline}
+
+              <p className={`text-lg sm:text-xl font-medium leading-snug ${
+                isDark ? 'text-emerald-400' : 'text-emerald-700'
+              }`}>
+                {heroContent.subtitle}
               </p>
             </div>
 
-            {/* Animated Technology Keywords */}
-            <div className="flex items-center gap-2.5 h-10 font-mono text-base sm:text-lg">
-              <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>Core Tech:</span>
-              <div className="relative overflow-hidden py-1">
-                <AnimatePresence mode="wait">
-                  <motion.span
-                    key={keywordIndex}
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: -20, opacity: 0 }}
-                    transition={{ duration: 0.35, ease: 'easeInOut' }}
-                    className="inline-block font-bold text-blue-600 dark:text-blue-400 underline decoration-blue-500/50 underline-offset-4"
-                  >
-                    {introduction.animatedKeywords[keywordIndex]}
-                  </motion.span>
-                </AnimatePresence>
-              </div>
-            </div>
-
-            {/* Clear Introduction */}
-            <p className={`text-base sm:text-lg leading-relaxed max-w-2xl ${
-              isDark ? 'text-slate-300' : 'text-slate-700'
+            {/* One Short Supporting Sentence (Non-repetitive) */}
+            <p className={`text-sm sm:text-base leading-relaxed max-w-xl ${
+              isDark ? 'text-[#94A3B8]' : 'text-[#475569]'
             }`}>
-              {introduction.summary}
+              {heroContent.supportingText}
             </p>
 
-            {/* Action Buttons: Exactly ONE prominent Contact Me button + Fast Copy Email */}
-            <div className="flex flex-wrap items-center gap-3.5 pt-2">
+            {/* Two Primary Actions Side by Side: Contact Me & Download Resume */}
+            <div className="flex flex-wrap items-center gap-3 pt-2">
+              {/* 1. Contact Me (Scrolls to Contact) */}
               <button
-                onClick={() => handleScroll('contact')}
-                className="px-7 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm flex items-center gap-2.5 shadow-lg shadow-blue-600/30 hover:shadow-blue-600/40 transition-all cursor-pointer group"
+                onClick={handleScrollToContact}
+                className="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-sm flex items-center gap-2 shadow-sm transition-all duration-200 cursor-pointer group"
               >
                 <span>Contact Me</span>
                 <Send className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
               </button>
 
-              {/* Fast Copy Email Action */}
-              <button
-                onClick={copyEmail}
-                className={`px-4 py-3.5 rounded-xl text-xs font-mono flex items-center gap-2 transition-all border cursor-pointer ${
+              {/* 2. Download Resume (Direct PDF Download) */}
+              <a
+                href={personalDetails.resumeUrl}
+                download="Balaji_Yagateela_Resume.pdf"
+                className={`px-5 py-3 rounded-xl text-sm font-medium flex items-center gap-2 border transition-all duration-200 cursor-pointer ${
                   isDark
-                    ? 'bg-slate-900/80 hover:bg-slate-800 text-slate-300 border-slate-800 hover:text-white hover:border-slate-700'
-                    : 'bg-white hover:bg-slate-100 text-slate-700 border-slate-200 shadow-sm'
+                    ? 'bg-[#161B22] hover:bg-[#1C2128] text-[#E5E7EB] border-[#30363D] hover:border-[#484F58]'
+                    : 'bg-white hover:bg-slate-50 text-[#0F172A] border-[#E2E8F0] shadow-sm hover:border-[#CBD5E1]'
                 }`}
-                title="Copy email to clipboard"
               >
-                {copied ? (
-                  <>
-                    <Check className="w-4 h-4 text-emerald-400" />
-                    <span className="text-emerald-400 font-semibold">Copied!</span>
-                  </>
-                ) : (
-                  <>
-                    <Copy className="w-4 h-4 text-blue-500" />
-                    <span>{personalDetails.email}</span>
-                  </>
-                )}
-              </button>
+                <Download className="w-4 h-4 text-emerald-500" />
+                <span>Download Resume</span>
+              </a>
             </div>
 
-            {/* Direct GitHub & LinkedIn Links */}
-            <div className={`flex items-center gap-6 pt-4 border-t text-xs font-mono ${
-              isDark ? 'border-slate-800/80 text-slate-400' : 'border-slate-200 text-slate-600'
+            {/* Professional Profiles */}
+            <div className={`flex items-center gap-5 pt-3 border-t text-xs font-mono ${
+              isDark ? 'border-[#30363D]/60 text-[#94A3B8]' : 'border-[#E2E8F0] text-[#64748B]'
             }`}>
               <a
                 href={personalDetails.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 hover:text-blue-500 transition-colors font-medium"
+                className="flex items-center gap-1.5 hover:text-emerald-500 transition-colors"
               >
                 <Github className="w-4 h-4" />
                 <span>github.com/Balajiyagateela</span>
@@ -198,20 +149,20 @@ export default function Hero() {
                 href={personalDetails.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 hover:text-blue-500 transition-colors font-medium"
+                className="flex items-center gap-1.5 hover:text-emerald-500 transition-colors"
               >
-                <Linkedin className="w-4 h-4 text-blue-500" />
-                <span>LinkedIn Profile</span>
+                <Linkedin className="w-4 h-4 text-cyan-subtle" />
+                <span>LinkedIn</span>
               </a>
             </div>
 
           </motion.div>
 
-          {/* Right Column: Professional Portrait Frame with Subtle Blue Glow & 3D Tilt */}
+          {/* Right Column: Professional Portrait with Subtle Depth */}
           <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
+            transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-5 flex justify-center lg:justify-end"
           >
             <motion.div 
@@ -223,74 +174,61 @@ export default function Hero() {
                 rotateY,
                 transformStyle: 'preserve-3d',
               }}
-              className="relative w-full max-w-[340px] sm:max-w-[380px] cursor-pointer"
+              className="relative w-full max-w-[320px] sm:max-w-[350px]"
             >
-              
-              {/* Outer Subtle Glowing Rings */}
-              <div className="absolute -inset-1 rounded-3xl bg-gradient-to-tr from-blue-600/50 via-indigo-500/40 to-blue-400/30 blur-lg opacity-60 transition-opacity" />
-
-              {/* Main Photo Card Container */}
-              <div className={`relative rounded-3xl overflow-hidden border shadow-xl p-2 transition-colors ${
+              {/* Card Container */}
+              <div className={`relative rounded-2xl overflow-hidden border p-2 portfolio-card ${
                 isDark 
-                  ? 'bg-[#080d1a] border-blue-500/30 shadow-[0_0_40px_-10px_rgba(37,99,235,0.3)]' 
-                  : 'bg-white border-blue-200/90 shadow-xl shadow-blue-500/10'
+                  ? 'bg-[#161B22] border-[#30363D] shadow-card-dark' 
+                  : 'bg-white border-[#E2E8F0] shadow-card-light'
               }`}>
-                
-                {/* Photo Element (Preserving Original Unmodified Face, Hairstyle & Skin Tone) */}
-                <div className="relative rounded-2xl overflow-hidden bg-slate-950 aspect-[3/4]">
+                {/* Photo Element (Preserving original face, structure, hair, skin tone) */}
+                <div className="relative rounded-xl overflow-hidden bg-slate-900 aspect-[3/4]">
                   <img
                     src={personalDetails.photoUrl}
                     alt={`${personalDetails.fullName} - Python Backend Developer`}
-                    className="w-full h-full object-cover object-top transition-transform duration-500 hover:scale-[1.03]"
+                    className="w-full h-full object-cover object-top transition-transform duration-300 hover:scale-[1.02]"
                     loading="eager"
                   />
-                  {/* Subtle Gradient at base of photo for text contrast */}
+                  {/* Subtle lower gradient for metadata contrast */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none" />
 
-                  {/* Identity Badge Overlay at Bottom */}
-                  <div className="absolute bottom-3 left-3 right-3 p-3 rounded-xl bg-slate-950/90 backdrop-blur-md border border-blue-500/30 text-white shadow-lg">
-                    <div className="flex items-center justify-between">
+                  {/* Identification strip at bottom of photo */}
+                  <div className="absolute bottom-2.5 left-2.5 right-2.5 p-2.5 rounded-lg bg-[#0B0F17]/90 backdrop-blur-sm border border-[#30363D]/80 text-white">
+                    <div className="flex items-center justify-between text-xs">
                       <div>
-                        <div className="text-xs font-bold tracking-tight text-white flex items-center gap-1.5">
-                          <span>{personalDetails.fullName}</span>
-                          <span className="w-2 h-2 rounded-full bg-blue-400" />
-                        </div>
-                        <div className="text-[11px] font-mono text-blue-400 font-medium">
-                          Speshway Solutions Pvt. Ltd.
-                        </div>
+                        <div className="font-semibold text-[#E5E7EB]">{personalDetails.fullName}</div>
+                        <div className="text-[11px] font-mono text-emerald-400">Speshway Solutions</div>
                       </div>
-                      <div className="text-right font-mono text-[10px] text-slate-300">
-                        <span className="px-2 py-0.5 rounded bg-blue-600/30 border border-blue-500/40 text-blue-300">
-                          Dec 2025 – Present
-                        </span>
-                      </div>
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                        Backend Dev
+                      </span>
                     </div>
                   </div>
                 </div>
 
-                {/* Architecture Spec Chips Below Photo */}
-                <div className="grid grid-cols-2 gap-2 mt-2 px-1 text-center font-mono text-[11px]">
-                  <div className={`p-2 rounded-xl border flex items-center justify-center gap-1.5 ${
+                {/* Micro tech tags below photo */}
+                <div className="grid grid-cols-2 gap-2 mt-2 px-0.5 font-mono text-[11px]">
+                  <div className={`p-2 rounded-lg border flex items-center justify-center gap-1.5 ${
                     isDark 
-                      ? 'bg-slate-900/90 border-slate-800 text-slate-300' 
-                      : 'bg-slate-50 border-slate-200 text-slate-700'
+                      ? 'bg-[#0B0F17] border-[#30363D] text-[#94A3B8]' 
+                      : 'bg-[#F8FAFC] border-[#E2E8F0] text-[#475569]'
                   }`}>
-                    <Server className="w-3.5 h-3.5 text-blue-500" />
+                    <Server className="w-3.5 h-3.5 text-emerald-500" />
                     <span>FastAPI & REST</span>
                   </div>
 
-                  <div className={`p-2 rounded-xl border flex items-center justify-center gap-1.5 ${
+                  <div className={`p-2 rounded-lg border flex items-center justify-center gap-1.5 ${
                     isDark 
-                      ? 'bg-slate-900/90 border-slate-800 text-slate-300' 
-                      : 'bg-slate-50 border-slate-200 text-slate-700'
+                      ? 'bg-[#0B0F17] border-[#30363D] text-[#94A3B8]' 
+                      : 'bg-[#F8FAFC] border-[#E2E8F0] text-[#475569]'
                   }`}>
-                    <Database className="w-3.5 h-3.5 text-emerald-400" />
+                    <Database className="w-3.5 h-3.5 text-cyan-subtle" />
                     <span>PostgreSQL & Kafka</span>
                   </div>
                 </div>
 
               </div>
-
             </motion.div>
           </motion.div>
 

@@ -12,7 +12,7 @@ import Footer from './components/Footer';
 export default function App() {
   return (
     <ThemeProvider>
-      <div className="min-h-screen font-sans selection:bg-blue-600 selection:text-white transition-colors duration-300">
+      <div className="min-h-screen font-sans selection:bg-emerald-600 selection:text-white transition-colors duration-200">
         {/* Top Sticky Navigation (Exact 6 items: Home | About | Skills | Projects | Experience | Contact) */}
         <Navbar />
 

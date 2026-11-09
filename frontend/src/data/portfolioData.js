@@ -2,7 +2,7 @@
  * Portfolio Data Configuration for Balaji Yagateela
  * Professional Identity: Python Backend Developer
  * 
- * Verifiable details directly from resume & projects.
+ * Verifiable details directly from resume & project contributions.
  */
 
 export const personalDetails = {
@@ -14,102 +14,151 @@ export const personalDetails = {
   companyRole: "Python Backend Developer",
   companyPeriod: "Dec 2025 – Present",
   email: "yagateelabalaji@gmail.com",
-  secondaryEmail: "rajbalajiyagateela@gmail.com",
   phone: "+91 63024 35600",
   location: "Hyderabad, Telangana, India",
   github: "https://github.com/Balajiyagateela",
   linkedin: "https://linkedin.com/in/balaji-yagateela-059922253",
-  status: "Available for Python & Backend Engineering Roles",
   photoUrl: "/balaji-photo.jpg",
-  metrics: [
-    { label: "API Endpoints Built", value: "30+" },
-    { label: "Automated Pytest Tests", value: "280+" },
-    { label: "Database Tables Modeled", value: "15+" },
-    { label: "Regression Test Failures", value: "0" },
-  ]
+  resumeUrl: "/Balaji_Yagateela_Resume.pdf",
 };
 
-export const introduction = {
+export const heroContent = {
   headline: "Python Backend Developer",
-  supportingHeadline: "Building Reliable Backend Applications with Python and FastAPI.",
-  summary: "I am a Python Backend Developer with approximately one year of professional experience, focused on developing REST APIs, backend applications, and database-driven solutions. My primary technical focus is Python, FastAPI, and PostgreSQL. I have practical experience with API development, database integration, backend business logic, service communication, and asynchronous processing. I also have additional knowledge of JavaScript, React.js, Node.js, and Express.js.",
-  animatedKeywords: [
-    "FastAPI & REST APIs",
-    "PostgreSQL & SQLAlchemy",
-    "Apache Kafka Streaming",
-    "Redis Caching Layers",
-    "Docker Containers",
-    "Pytest Automated Testing",
-    "Backend Microservices",
+  subtitle: "Specializing in scalable REST APIs, event-driven architectures using Kafka, and reliable PostgreSQL data persistence.",
+  supportingText: "Committed to building clean, maintainable backend services with robust testing, structured database modeling, and production-ready architectures.",
+};
+
+export const aboutContent = {
+  headline: "Engineering Focus & Background",
+  summary: "Backend developer with professional experience building and testing REST APIs, database schemas, and distributed messaging pipelines. Focused on engineering reliable software systems through modular service architecture, clean database normalization, and automated test-driven practices.",
+  corePillars: [
+    {
+      title: "Backend & API Architecture",
+      desc: "Designing modular, stateless RESTful APIs using Python and FastAPI with strict Pydantic contract validation, structured response schemas, and clean error boundaries.",
+    },
+    {
+      title: "Database Modeling & Consistency",
+      desc: "Modeling normalized PostgreSQL relational schemas, managing schema versions with Alembic migrations, and enforcing transactional ACID consistency with concurrency control.",
+    },
+    {
+      title: "Testing, Debugging & Reliability",
+      desc: "Writing comprehensive automated test suites using Pytest to prevent regressions, systematically debugging API contracts, and ensuring dependable software delivery.",
+    },
   ],
-  focusPillars: [
-    { title: "FastAPI & REST APIs", desc: "Contract-driven REST API design with strict Pydantic schemas, validation, and error boundaries." },
-    { title: "PostgreSQL & Database Design", desc: "Relational schema modeling, 15+ normalized tables, Alembic migrations, and ACID consistency." },
-    { title: "Event-Driven Architecture", desc: "Apache Kafka consumer groups for decoupled, asynchronous message processing across services." },
-    { title: "In-Memory Caching", desc: "Redis caching layers minimizing database load and boosting response throughput." },
-  ]
 };
 
 export const skillsData = [
   {
-    category: "Programming Languages",
-    description: "Core languages used for backend logic, database operations, and system automation.",
-    skills: [
-      { name: "Python", isCore: true },
-      { name: "JavaScript", isCore: false },
-      { name: "SQL", isCore: true },
-    ],
-  },
-  {
     category: "Backend Development",
-    description: "Frameworks, libraries, and runtimes used to design and implement robust APIs.",
+    description: "Core frameworks and runtimes used to build scalable, high-throughput REST APIs.",
     skills: [
       { name: "Python", isCore: true },
       { name: "FastAPI", isCore: true },
-      { name: "REST API Development", isCore: true },
+      { name: "REST APIs", isCore: true },
       { name: "Node.js", isCore: false },
       { name: "Express.js", isCore: false },
     ],
   },
   {
     category: "Databases",
-    description: "Relational and document database systems for secure, high-integrity data storage.",
+    description: "Relational and document storage engines supporting transactional integrity.",
     skills: [
       { name: "PostgreSQL", isCore: true },
       { name: "MongoDB", isCore: false },
-      { name: "MySQL", isCore: false },
-      { name: "SQLite", isCore: false },
     ],
   },
   {
-    category: "Backend Technologies & Tools",
-    description: "Distributed message streaming, caching, ORM layers, and container tooling.",
+    category: "Event-Driven & Infrastructure",
+    description: "Asynchronous messaging, in-memory caching layers, and container runtimes.",
     skills: [
       { name: "Apache Kafka", isCore: true },
       { name: "Redis", isCore: true },
       { name: "Docker", isCore: true },
-      { name: "SQLAlchemy", isCore: true },
-      { name: "Pydantic", isCore: true },
-      { name: "Pytest", isCore: true },
     ],
   },
   {
-    category: "Tools & Environment",
-    description: "Developer tooling for version control, API testing, and code development.",
+    category: "Frontend",
+    description: "Supporting frontend competencies applied for integration and full-stack development.",
+    skills: [
+      { name: "JavaScript", isCore: false },
+      { name: "React.js", isCore: false },
+      { name: "HTML", isCore: false },
+      { name: "CSS", isCore: false },
+    ],
+  },
+  {
+    category: "Tools",
+    description: "Developer tooling for version control, collaborative workflows, and environment management.",
     skills: [
       { name: "Git", isCore: true },
       { name: "GitHub", isCore: true },
-      { name: "Postman", isCore: true },
       { name: "VS Code", isCore: true },
     ],
   },
+];
+
+export const projectsData = [
   {
-    category: "Frontend (Supporting)",
-    description: "Supporting frontend knowledge utilized for full-stack integration and this portfolio application.",
-    skills: [
-      { name: "React.js", isCore: false },
-      { name: "HTML5", isCore: false },
-      { name: "CSS3", isCore: false },
+    id: "eaicsp-inventory-service",
+    title: "EAICSP – Inventory Management Service",
+    module: "Backend Microservice Contribution",
+    type: "Enterprise Inventory Service",
+    badge: "Core Backend Project",
+    technologies: ["Python", "FastAPI", "PostgreSQL", "Redis", "Apache Kafka", "Docker", "Pytest"],
+    description: "A production-oriented backend service managing inventory operations, multi-level warehouse hierarchies, purchase order workflows, and event-driven service communication.",
+    github: "https://github.com/Balajiyagateela",
+    highlights: [
+      {
+        category: "Architecture",
+        points: [
+          "Developed multi-level warehouse inventory architecture across central, regional, and local tiers.",
+          "Implemented PostgreSQL relational data modeling and managed database migrations with Alembic.",
+        ],
+      },
+      {
+        category: "Concurrency and Valuation",
+        points: [
+          "Applied optimistic locking to prevent race conditions during concurrent stock updates.",
+          "Implemented FIFO and weighted-average inventory valuation methods for precise cost tracking.",
+        ],
+      },
+      {
+        category: "Event-Driven Processing and Testing",
+        points: [
+          "Built Kafka consumers to ingest and react to supplier compliance status events asynchronously.",
+          "Wrote automated Pytest test suites covering API contracts and business logic to prevent regressions.",
+        ],
+      },
+    ],
+  },
+  {
+    id: "ecommerce-mern-app",
+    title: "E-Commerce Web Application",
+    module: "Full-Stack Web Project",
+    type: "Secondary Full-Stack Application",
+    badge: "Full-Stack Project",
+    technologies: ["MongoDB", "Express.js", "React.js", "Node.js", "JavaScript"],
+    description: "A full-stack e-commerce web application featuring user catalog browsing, shopping cart state management, and Express.js REST API endpoints.",
+    github: "https://github.com/Balajiyagateela",
+    highlights: [
+      {
+        category: "Backend API",
+        points: [
+          "Built RESTful API endpoints with Express.js to handle product catalog queries and cart operations.",
+        ],
+      },
+      {
+        category: "Database & Models",
+        points: [
+          "Structured MongoDB document collections for products, users, carts, and order entries.",
+        ],
+      },
+      {
+        category: "Client Integration",
+        points: [
+          "Connected a responsive React.js frontend to backend API routes for end-to-end cart checkout flow.",
+        ],
+      },
     ],
   },
 ];
@@ -120,107 +169,46 @@ export const experienceData = [
     role: "Python Backend Developer",
     period: "Dec 2025 – Present",
     location: "Hyderabad, India",
-    type: "Full-Time",
+    type: "Professional Experience",
     isCurrent: true,
-    summary: "Building and maintaining production-ready microservices, high-throughput REST APIs, and event-driven architectures with FastAPI and PostgreSQL.",
     responsibilities: [
-      "Developed RESTful APIs using Python and FastAPI with Pydantic validation, maintaining OpenAPI (Swagger) documentation for consistent API development and service integration.",
-      "Designed and integrated PostgreSQL databases using SQLAlchemy ORM, writing optimised SQL queries and managing schema migrations with Alembic to support evolving backend data requirements.",
-      "Implemented JWT authentication and role-based access control (RBAC) to secure API endpoints, enforcing authorization policies across all backend services.",
-      "Built Apache Kafka consumer services to enable event-driven architecture and asynchronous communication between microservices, processing domain events for service integration.",
-      "Configured Redis caching for frequently accessed data, reducing redundant database queries and improving backend response performance.",
-      "Automated testing with Pytest, writing unit tests, integration tests, and API contract tests to maintain a reliable CI pipeline for continuous backend development.",
-      "Collaborated on backend integration using Git and GitHub pull-request workflows, conducting code reviews and resolving service integration defects across development cycles.",
+      "Developed and maintained RESTful APIs using Python, FastAPI, and Pydantic validation.",
+      "Designed and integrated PostgreSQL database models using SQLAlchemy ORM, managing schema migrations with Alembic.",
+      "Implemented Redis caching to optimize database query performance on frequently requested endpoints.",
+      "Configured Apache Kafka consumer services to enable decoupled asynchronous communication across microservices.",
+      "Wrote automated unit and integration tests using Pytest to ensure consistent contract reliability across development cycles.",
     ],
-    techStack: ["Python", "FastAPI", "PostgreSQL", "Apache Kafka", "Redis", "Docker", "Pytest", "SQLAlchemy", "Alembic", "Git", "GitHub"],
+    techStack: ["Python", "FastAPI", "PostgreSQL", "Apache Kafka", "Redis", "Docker", "Pytest", "SQLAlchemy", "Alembic", "Git"],
   },
   {
     company: "CSEdge",
     role: "Web Development Intern",
-    period: "Internship",
-    location: "India",
+    period: "Oct 2024 – Nov 2024",
+    location: "Remote",
     type: "Internship",
     isCurrent: false,
-    summary: "Developed interactive, responsive web interfaces and practiced collaborative version control in a team workflow.",
     responsibilities: [
-      "Developed responsive web pages using HTML5, CSS3, and JavaScript, applying DOM manipulation techniques to build interactive UI components across multiple page layouts.",
-      "Gained practical exposure to front-end development workflows, DOM manipulation, and collaborative version control using Git and GitHub.",
+      "Built responsive web components with HTML5, CSS3, and JavaScript, practicing DOM manipulation techniques.",
+      "Gained hands-on exposure to team development workflows and version control with Git and GitHub.",
     ],
-    techStack: ["HTML5", "CSS3", "JavaScript", "DOM", "Git", "GitHub"],
-  },
-];
-
-export const projectsData = [
-  {
-    id: "eaicsp-inventory-service",
-    title: "EAICSP – Enterprise AI & Supply Chain Platform",
-    module: "Module: Inventory Service",
-    type: "Production Backend Microservice",
-    badge: "Core Enterprise Project",
-    technologies: ["Python", "FastAPI", "PostgreSQL", "Redis", "Apache Kafka", "Docker", "Pytest", "REST APIs"],
-    description: "An enterprise inventory management backend service supporting inventory operations, purchase order workflows, database integration, and communication with other services.",
-    scopeNote: "Contributed as a backend developer focusing on inventory operations, purchase order lifecycle workflows, Kafka consumers, and PostgreSQL data consistency.",
-    contributedAreas: [
-      "Developed 30+ RESTful inventory APIs with FastAPI and PostgreSQL, modelling a 3-tier warehouse hierarchy (central, regional, and local) with 15+ database tables.",
-      "Implemented purchase-order draft-to-approval workflows with 4 role-based permission levels to enforce configurable approval policies across 5 order status transitions.",
-      "Integrated supplier compliance validation into PO workflows, verifying regulatory and contractual obligations via 2 external service APIs before order confirmation.",
-      "Built FIFO and weighted-average inventory valuation logic across 2 costing methods to maintain accurate cost-of-goods tracking across all stock movements.",
-      "Applied optimistic locking on concurrent inventory updates to prevent race conditions, maintaining data consistency across simultaneous warehouse operations.",
-      "Wrote 280+ Pytest test cases covering API contracts, integration flows, and edge cases, achieving 0 failures across the full regression suite.",
-      "Implemented Kafka-driven event consumers and reorder-point recommendation logic to react to supplier compliance status-change events in real time.",
-    ],
-    architectureHighlights: {
-      framework: "FastAPI (Python 3.10+)",
-      database: "PostgreSQL (15+ Tables, 3-Tier Hierarchy)",
-      eventStreaming: "Apache Kafka (inventory.events, supplier.status)",
-      cache: "Redis In-Memory Key-Value",
-      tests: "280+ Pytest Cases (0 Failures)",
-      concurrency: "Optimistic Locking & ACID Isolation",
-    },
-    github: "https://github.com/Balajiyagateela",
-    hasArchitectureModal: true,
-  },
-  {
-    id: "ecommerce-mern-app",
-    title: "E-Commerce Web Application",
-    module: "Full-Stack MERN Project",
-    type: "Full-Stack Web Application",
-    badge: "Full-Stack Project",
-    technologies: ["MongoDB", "Express.js", "React.js", "Node.js", "JavaScript"],
-    description: "A full-stack e-commerce web application featuring user catalog browsing, dynamic shopping cart management, and Express.js REST API endpoints.",
-    scopeNote: "Demonstrates practical full-stack proficiency with Node.js and Express.js REST API architecture, MongoDB document schemas, and React UI state management.",
-    contributedAreas: [
-      "Developed a responsive React.js frontend with 10+ reusable components enabling product browsing, search filtering, and dynamic cart management.",
-      "Built RESTful backend APIs using Node.js and Express.js to handle product catalog operations, user authentication, and end-to-end order processing.",
-      "Designed 4 MongoDB collections for products, users, carts, and orders, supporting a complete checkout and order-tracking workflow.",
-      "Integrated frontend and backend components to deliver a full e-commerce purchase flow from product discovery to order confirmation.",
-    ],
-    architectureHighlights: {
-      server: "Node.js & Express.js REST API",
-      database: "MongoDB (4 Core Collections)",
-      client: "React.js Component Architecture",
-      auth: "Token-based Authentication Flow",
-    },
-    github: "https://github.com/Balajiyagateela",
-    demo: "https://github.com/Balajiyagateela",
-    hasArchitectureModal: false,
+    techStack: ["HTML5", "CSS3", "JavaScript", "Git", "GitHub"],
   },
 ];
 
 export const educationData = [
   {
-    degree: "B.Tech – Computer Science and Engineering",
+    degree: "B.Tech in Computer Science and Engineering",
     institution: "Narayana Engineering College, Gudur, Andhra Pradesh",
-    year: "Dec 2021 – Apr 2025",
+    year: "2020 – 2024",
     grade: "CGPA: 8.1 / 10",
-    coursework: "Data Structures & Algorithms, Database Management Systems (DBMS), Operating Systems, Computer Networks, Object-Oriented Software Engineering.",
+    coursework: "Data Structures & Algorithms, Database Management Systems (DBMS), Operating Systems, Computer Networks.",
   },
   {
-    degree: "Intermediate – MPC",
+    degree: "Intermediate – MPC (Mathematics, Physics, Chemistry)",
     institution: "LVR Junior College, Nellore, Andhra Pradesh",
-    year: "Jun 2019 – May 2021",
+    year: "2018 – 2020",
     grade: "CGPA: 9.1 / 10",
-    coursework: "Mathematics, Physics, Chemistry (MPC) with academic distinction.",
+    coursework: "Mathematics, Physics, Chemistry with academic distinction.",
   },
 ];
 
@@ -228,160 +216,13 @@ export const achievementsData = [
   {
     title: "Project Expo Award",
     organization: "College-Level Technical Project Exhibition",
-    description: "Awarded a prize at the college-level Project Expo for presenting a technically strong, resilient project demonstration.",
+    description: "Awarded a prize at the college-level Project Expo for demonstrating a technically resilient software engineering solution.",
     badge: "Prize Winner",
   },
   {
-    title: "NIPUNA State-Level Skill Programme",
+    title: "NIPUNA Technical Skill Programme",
     organization: "AP State Technical Skill Development",
-    description: "Participated in the NIPUNA state-level technical skill development programme, gaining extensive exposure to industry-standard backend and software engineering practices.",
+    description: "Participated in the state-level technical development initiative focused on industry-standard backend and software practices.",
     badge: "State-Level",
-  },
-];
-
-export const backendKnowledgeData = [
-  {
-    id: "rest-api",
-    title: "REST API Architecture",
-    category: "Architecture & Design",
-    summary: "Designing stateless, resource-oriented RESTful endpoints with consistent URI naming conventions and predictable payloads.",
-    keyPoints: [
-      "Plural noun-based URIs (e.g., /api/v1/inventory/items)",
-      "Stateless request/response cycles without server-side session stickiness",
-      "Consistent JSON response envelopes for data, pagination, and error metadata",
-      "API versioning strategies to avoid breaking downstream consumers",
-    ],
-  },
-  {
-    id: "http-methods",
-    title: "HTTP Methods & Status Codes",
-    category: "Protocols & Standards",
-    summary: "Strict semantic application of standard HTTP verbs and status codes for transparent client communication.",
-    keyPoints: [
-      "GET (safe/idempotent), POST (creation), PUT (replacement), PATCH (partial update), DELETE",
-      "2xx: 200 OK, 201 Created, 204 No Content",
-      "4xx: 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 422 Unprocessable Entity",
-      "5xx: 500 Internal Error, 502 Bad Gateway, 503 Service Unavailable",
-    ],
-  },
-  {
-    id: "request-validation",
-    title: "Request Validation",
-    category: "Data Integrity & Security",
-    summary: "Enforcing strict schema validation at the API perimeter to prevent malformed payloads from polluting business logic.",
-    keyPoints: [
-      "Declarative payload models using Pydantic in FastAPI",
-      "Data type casting, field constraints (min/max, regex, enum validations)",
-      "Automatic generation of 422 Unprocessable Entity with detailed field error trees",
-      "Sanitizing input parameters to guard against query injection and malformed formats",
-    ],
-  },
-  {
-    id: "auth",
-    title: "Authentication & Authorization",
-    category: "Security",
-    summary: "Safeguarding backend resources and restricting service access through established security paradigms.",
-    keyPoints: [
-      "JWT (JSON Web Token) creation, signing, and bearer verification",
-      "Role-Based Access Control (RBAC) inspecting user roles across 4 permission tiers",
-      "API Key authentication headers for service-to-service communication",
-      "Secure credential handling via environment variables and timing-safe comparisons",
-    ],
-  },
-  {
-    id: "sql-relationships",
-    title: "SQL & Database Relationships",
-    category: "Database Modeling",
-    summary: "Designing relational database schemas adhering to normalization principles and relational integrity.",
-    keyPoints: [
-      "Primary Keys, Foreign Key constraints, and cascade delete/update rules",
-      "15+ tables modeled across a 3-tier warehouse hierarchy (central, regional, local)",
-      "Query optimization utilizing indexes on foreign keys and frequently filtered columns",
-      "Preventing N+1 query problems through eager loading and joined loads in SQLAlchemy",
-    ],
-  },
-  {
-    id: "db-transactions",
-    title: "Database Transactions",
-    category: "Data Consistency",
-    summary: "Managing atomic units of work across multiple database queries to ensure data consistency.",
-    keyPoints: [
-      "ACID guarantees: Atomicity, Consistency, Isolation, and Durability",
-      "Optimistic locking on concurrent inventory updates to prevent race conditions",
-      "Explicit transaction boundaries: BEGIN, COMMIT, and ROLLBACK",
-      "Alembic schema migrations versioning database evolutions cleanly",
-    ],
-  },
-  {
-    id: "exception-handling",
-    title: "Exception Handling",
-    category: "Reliability & Resilience",
-    summary: "Implementing centralized exception handlers to intercept unexpected failures cleanly without leaking internal stack traces.",
-    keyPoints: [
-      "Custom domain exceptions representing business rule violations",
-      "FastAPI global exception handlers returning uniform JSON schemas",
-      "Sanitized client-facing error messages preventing security exposure",
-      "Logging error traces internally for rapid post-incident root-cause analysis",
-    ],
-  },
-  {
-    id: "kafka-consumers",
-    title: "Kafka Consumers",
-    category: "Distributed Systems",
-    summary: "Consuming asynchronous message streams from Kafka topics for decoupled background processing.",
-    keyPoints: [
-      "Subscribing to distributed event topics (e.g. inventory.events, supplier.status)",
-      "Consumer groups for horizontal scaling and partition assignment",
-      "Manual and automatic offset commit strategies preventing duplicate processing",
-      "Reorder-point recommendation logic reacting to supplier status change events in real time",
-    ],
-  },
-  {
-    id: "async-processing",
-    title: "Asynchronous Processing",
-    category: "Performance & Concurrency",
-    summary: "Leveraging Python's asyncio and FastAPI's native async def capabilities for non-blocking I/O operations.",
-    keyPoints: [
-      "Event loop mechanics and cooperative multitasking with async/await",
-      "Non-blocking database queries and network calls via asynchronous drivers",
-      "FastAPI BackgroundTasks for offloading non-critical operations",
-      "Preventing CPU-heavy loops from freezing the async event loop",
-    ],
-  },
-  {
-    id: "service-communication",
-    title: "Service-to-Service Communication",
-    category: "Distributed Architecture",
-    summary: "Facilitating reliable inter-service HTTP and event-based communication across microservices.",
-    keyPoints: [
-      "Internal HTTP client communication with httpx / requests",
-      "Validating supplier compliance via 2 external service APIs prior to PO approval",
-      "Configuring request timeouts and retry logic with exponential backoff",
-      "Passing correlation IDs via headers for end-to-end distributed tracing",
-    ],
-  },
-  {
-    id: "logging-debugging",
-    title: "Logging & Debugging",
-    category: "Observability",
-    summary: "Implementing structured application logging and systematic debugging routines for production observability.",
-    keyPoints: [
-      "Standard Python logging module configured with log levels (DEBUG, INFO, WARNING, ERROR, CRITICAL)",
-      "Structured JSON logs with timestamps, service names, and contextual metadata",
-      "Postman collection debugging, request inspection, and cURL generation",
-      "OpenAPI / Swagger interactive documentation for living contract validation",
-    ],
-  },
-  {
-    id: "automated-testing",
-    title: "Automated Testing",
-    category: "Quality Assurance",
-    summary: "Writing automated test suites to verify backend business logic, validation, and endpoint contracts.",
-    keyPoints: [
-      "280+ Pytest test cases covering API contracts, integration flows, and edge cases",
-      "0 failures across the complete regression suite in continuous testing",
-      "FastAPI TestClient for high-speed in-process HTTP endpoint verification",
-      "Mocking external HTTP calls, database sessions, and Kafka dependencies",
-    ],
   },
 ];

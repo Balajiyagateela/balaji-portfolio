@@ -1,37 +1,31 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { 
   Server, 
-  Layers, 
   ExternalLink, 
   Github, 
   CheckCircle2, 
   Terminal, 
-  ShieldCheck, 
+  Layers, 
   Database,
   Cpu,
-  Radio,
-  Box,
-  Code2,
-  Workflow,
-  Sparkles
+  ShoppingBag
 } from 'lucide-react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { projectsData } from '../data/portfolioData';
 import { useTheme } from '../context/ThemeContext';
-import ArchitectureModal from '../components/ArchitectureModal';
 
-// Reusable 3D Tilt Card wrapper for desktop
-function TiltCard({ children, className = '' }) {
+// Subtle 3D Tilt Wrapper for Project Cards
+function TiltProjectCard({ children, className = '' }) {
   const cardRef = useRef(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const mouseXSpring = useSpring(x, { stiffness: 180, damping: 20 });
   const mouseYSpring = useSpring(y, { stiffness: 180, damping: 20 });
-  const rotateX = useTransform(mouseYSpring, [-200, 200], [5, -5]);
-  const rotateY = useTransform(mouseXSpring, [-200, 200], [-5, 5]);
+  const rotateX = useTransform(mouseYSpring, [-200, 200], [4, -4]);
+  const rotateY = useTransform(mouseXSpring, [-200, 200], [-4, 4]);
 
   const handleMouseMove = (e) => {
-    if (!cardRef.current) return;
+    if (window.innerWidth < 768 || !cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
     const mouseX = e.clientX - rect.left - rect.width / 2;
     const mouseY = e.clientY - rect.top - rect.height / 2;
@@ -63,317 +57,188 @@ function TiltCard({ children, className = '' }) {
 
 export default function Projects() {
   const { isDark } = useTheme();
-  const [selectedProject, setSelectedProject] = useState(null);
-
-  const inventoryProject = projectsData.find(p => p.id === 'eaicsp-inventory-service') || projectsData[0];
-  const ecommerceProject = projectsData.find(p => p.id === 'ecommerce-mern-app') || projectsData[1];
 
   return (
     <section 
       id="projects" 
-      className={`py-20 relative border-t transition-colors duration-300 ${
-        isDark ? 'bg-[#030712] border-blue-950/60' : 'bg-white border-slate-200'
+      className={`py-20 relative border-t transition-colors ${
+        isDark ? 'bg-[#0B0F17] border-[#30363D]/60' : 'bg-[#F3F4F6] border-[#E2E8F0]'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="max-w-3xl mb-12">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-600/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 text-xs font-mono font-semibold mb-3">
+        <div className="max-w-2xl mb-12">
+          <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium mb-3 border transition-colors ${
+            isDark 
+              ? 'bg-[#161B22] border-[#30363D] text-emerald-400' 
+              : 'bg-white border-[#E2E8F0] text-emerald-600 shadow-sm'
+          }`}>
             <Terminal className="w-3.5 h-3.5" />
             <span>03 // FEATURED PROJECTS</span>
           </div>
-          <h2 className={`text-3xl sm:text-4xl font-extrabold tracking-tight ${
-            isDark ? 'text-white' : 'text-slate-900'
+          <h2 className={`text-3xl sm:text-4xl font-bold tracking-tight ${
+            isDark ? 'text-[#E5E7EB]' : 'text-[#0F172A]'
           }`}>
-            Backend Microservices & Projects
+            Backend Engineering Projects
           </h2>
-          <p className="mt-2 text-slate-500 dark:text-slate-400 text-sm font-mono">
-            Enterprise backend architecture, asynchronous event consumers, and full-stack API integration.
+          <p className={`mt-2 text-sm sm:text-base leading-relaxed ${
+            isDark ? 'text-[#94A3B8]' : 'text-[#475569]'
+          }`}>
+            Practical implementation of microservices, asynchronous event consumers, and full-stack REST APIs.
           </p>
         </div>
 
-        {/* Large Project Cards */}
-        <div className="space-y-12">
+        {/* Project Cards List */}
+        <div className="space-y-10">
+          {projectsData.map((project, idx) => {
+            const isPrimary = project.id === 'eaicsp-inventory-service';
 
-          {/* PROJECT 1: EAICSP – ENTERPRISE INVENTORY SERVICE (Featured Backend Microservice) */}
-          {inventoryProject && (
-            <TiltCard
-              className={`rounded-2xl border overflow-hidden transition-all duration-300 ${
-                isDark 
-                  ? 'bg-[#080d1a] border-blue-500/30 shadow-xl shadow-blue-950/20' 
-                  : 'bg-white border-blue-200 shadow-lg shadow-blue-500/5'
-              }`}
-            >
-              {/* Card Banner */}
-              <div className={`px-6 sm:px-8 py-4 border-b flex flex-wrap items-center justify-between gap-4 ${
-                isDark 
-                  ? 'bg-gradient-to-r from-blue-950/50 via-slate-900 to-[#0c1324] border-blue-900/40' 
-                  : 'bg-gradient-to-r from-blue-50 via-slate-50 to-white border-slate-200'
-              }`}>
-                <div className="flex items-center gap-2.5">
-                  <div className="p-2 rounded-xl bg-blue-600/20 text-blue-500 border border-blue-500/30">
-                    <Server className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <span className="text-xs font-mono font-bold text-blue-500 uppercase tracking-wider block">
-                      {inventoryProject.module}
-                    </span>
-                    <span className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-                      {inventoryProject.type}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <span className="text-xs font-mono px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 font-bold">
-                    {inventoryProject.badge}
-                  </span>
-                </div>
-              </div>
-
-              {/* Card Content Body */}
-              <div className="p-6 sm:p-8 space-y-6">
-                
-                {/* Title & Quick Action Buttons */}
-                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
-                  <div className="space-y-1">
-                    <h3 className={`text-2xl sm:text-3xl font-extrabold tracking-tight ${
-                      isDark ? 'text-white' : 'text-slate-900'
-                    }`}>
-                      {inventoryProject.title}
-                    </h3>
-                    <p className={`text-sm sm:text-base leading-relaxed max-w-3xl ${
-                      isDark ? 'text-slate-300' : 'text-slate-700'
-                    }`}>
-                      {inventoryProject.description}
-                    </p>
-                  </div>
-
-                  <div className="flex items-center gap-3 shrink-0">
-                    <button
-                      onClick={() => setSelectedProject(inventoryProject)}
-                      className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold flex items-center gap-2 shadow-md shadow-blue-600/30 transition-all cursor-pointer"
-                    >
-                      <Layers className="w-4 h-4" />
-                      <span>Inspect Architecture</span>
-                    </button>
-
-                    <a
-                      href={inventoryProject.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`px-4 py-2.5 rounded-xl text-xs font-medium flex items-center gap-2 transition-all border ${
-                        isDark 
-                          ? 'bg-slate-900 hover:bg-slate-800 text-slate-200 border-slate-700' 
-                          : 'bg-slate-100 hover:bg-slate-200 text-slate-800 border-slate-300'
-                      }`}
-                    >
-                      <Github className="w-4 h-4" />
-                      <span>GitHub</span>
-                    </a>
-                  </div>
-                </div>
-
-                {/* Contributor Scope Notice */}
-                <div className={`p-4 rounded-xl border text-xs flex items-start gap-3 ${
-                  isDark 
-                    ? 'bg-blue-950/20 border-blue-900/50 text-blue-200' 
-                    : 'bg-blue-50 border-blue-200 text-blue-900'
+            return (
+              <TiltProjectCard
+                key={project.id}
+                className={`rounded-2xl border portfolio-card overflow-hidden transition-all duration-200 ${
+                  isDark
+                    ? isPrimary
+                      ? 'bg-[#161B22] border-emerald-500/40 shadow-card-dark'
+                      : 'bg-[#161B22] border-[#30363D] shadow-card-dark'
+                    : isPrimary
+                      ? 'bg-white border-emerald-300 shadow-card-light'
+                      : 'bg-white border-[#E2E8F0] shadow-card-light'
+                }`}
+              >
+                {/* Header Strip */}
+                <div className={`px-6 sm:px-8 py-4 border-b flex flex-wrap items-center justify-between gap-4 transition-colors ${
+                  isDark
+                    ? 'bg-[#111722] border-[#30363D]/80'
+                    : 'bg-[#F8FAFC] border-[#E2E8F0]'
                 }`}>
-                  <ShieldCheck className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
-                  <div>
-                    <strong className="font-semibold block mb-0.5">Authentic Backend Scope:</strong>
-                    {inventoryProject.scopeNote}
-                  </div>
-                </div>
-
-                {/* Technology Badges */}
-                <div>
-                  <div className="text-xs font-mono uppercase tracking-wider text-slate-400 font-bold mb-3">
-                    Technologies Applied:
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {inventoryProject.technologies.map((tech) => (
-                      <span
-                        key={tech}
-                        className={`px-3 py-1 rounded-lg text-xs font-mono font-medium border ${
-                          isDark 
-                            ? 'bg-slate-900 border-slate-800 text-slate-200' 
-                            : 'bg-slate-100 border-slate-200 text-slate-800'
-                        }`}
-                      >
-                        {tech}
+                  <div className="flex items-center gap-3">
+                    <div className={`p-2 rounded-lg border transition-colors ${
+                      isDark
+                        ? 'bg-[#0B0F17] text-emerald-400 border-[#30363D]'
+                        : 'bg-white text-emerald-600 border-[#E2E8F0] shadow-sm'
+                    }`}>
+                      {isPrimary ? <Server className="w-4 h-4" /> : <ShoppingBag className="w-4 h-4" />}
+                    </div>
+                    <div>
+                      <span className="text-xs font-mono font-semibold uppercase tracking-wider text-emerald-500 block">
+                        {project.module}
                       </span>
-                    ))}
+                      <span className={`text-xs ${isDark ? 'text-[#94A3B8]' : 'text-[#64748B]'}`}>
+                        {project.type}
+                      </span>
+                    </div>
                   </div>
-                </div>
 
-                {/* Detailed Contribution Bullets */}
-                <div className="space-y-3 pt-2">
-                  <div className="text-xs font-mono uppercase tracking-wider text-slate-400 font-bold">
-                    Key Implementation Highlights:
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {inventoryProject.contributedAreas.map((area, idx) => (
-                      <div 
-                        key={idx}
-                        className={`p-3.5 rounded-xl border flex items-start gap-2.5 text-xs sm:text-sm leading-relaxed ${
-                          isDark 
-                            ? 'bg-slate-900/60 border-slate-800/80 text-slate-300' 
-                            : 'bg-slate-50 border-slate-200 text-slate-700'
-                        }`}
-                      >
-                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                        <span>{area}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-              </div>
-            </TiltCard>
-          )}
-
-          {/* PROJECT 2: FULL-STACK MERN E-COMMERCE APPLICATION */}
-          {ecommerceProject && (
-            <TiltCard
-              className={`rounded-2xl border overflow-hidden transition-all duration-300 ${
-                isDark 
-                  ? 'bg-[#080d1a] border-slate-800 shadow-lg' 
-                  : 'bg-white border-slate-200 shadow-md'
-              }`}
-            >
-              {/* Card Banner */}
-              <div className={`px-6 sm:px-8 py-4 border-b flex flex-wrap items-center justify-between gap-4 ${
-                isDark 
-                  ? 'bg-gradient-to-r from-slate-900 via-slate-900 to-[#0c1324] border-slate-800' 
-                  : 'bg-gradient-to-r from-slate-50 via-slate-50 to-white border-slate-200'
-              }`}>
-                <div className="flex items-center gap-2.5">
-                  <div className="p-2 rounded-xl bg-indigo-600/20 text-indigo-400 border border-indigo-500/30">
-                    <Code2 className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <span className="text-xs font-mono font-bold text-indigo-400 uppercase tracking-wider block">
-                      {ecommerceProject.module}
-                    </span>
-                    <span className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-                      {ecommerceProject.type}
+                  <div className="flex items-center gap-2">
+                    <span className={`text-xs font-mono px-3 py-1 rounded-full font-medium border ${
+                      isDark
+                        ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
+                        : 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                    }`}>
+                      {project.badge}
                     </span>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3">
-                  <span className="text-xs font-mono px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 font-bold">
-                    {ecommerceProject.badge}
-                  </span>
-                </div>
-              </div>
+                {/* Card Content Body */}
+                <div className="p-6 sm:p-8 space-y-6">
+                  {/* Title & Description */}
+                  <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    <div className="space-y-1.5 max-w-3xl">
+                      <h3 className={`text-xl sm:text-2xl font-bold tracking-tight ${
+                        isDark ? 'text-[#E5E7EB]' : 'text-[#0F172A]'
+                      }`}>
+                        {project.title}
+                      </h3>
+                      <p className={`text-sm sm:text-base leading-relaxed ${
+                        isDark ? 'text-[#94A3B8]' : 'text-[#475569]'
+                      }`}>
+                        {project.description}
+                      </p>
+                    </div>
 
-              {/* Card Content Body */}
-              <div className="p-6 sm:p-8 space-y-6">
-                
-                {/* Title & Quick Action Buttons */}
-                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
-                  <div className="space-y-1">
-                    <h3 className={`text-2xl sm:text-3xl font-extrabold tracking-tight ${
-                      isDark ? 'text-white' : 'text-slate-900'
-                    }`}>
-                      {ecommerceProject.title}
-                    </h3>
-                    <p className={`text-sm sm:text-base leading-relaxed max-w-3xl ${
-                      isDark ? 'text-slate-300' : 'text-slate-700'
-                    }`}>
-                      {ecommerceProject.description}
-                    </p>
+                    <div className="flex items-center gap-3 shrink-0">
+                      <a
+                        href={project.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`px-4 py-2 rounded-xl text-xs font-medium flex items-center gap-2 border transition-colors cursor-pointer ${
+                          isDark
+                            ? 'bg-[#0B0F17] hover:bg-[#161B22] text-[#E5E7EB] border-[#30363D] hover:border-[#484F58]'
+                            : 'bg-white hover:bg-slate-50 text-[#0F172A] border-[#E2E8F0] shadow-sm hover:border-[#CBD5E1]'
+                        }`}
+                      >
+                        <Github className="w-4 h-4" />
+                        <span>View Repository</span>
+                      </a>
+                    </div>
                   </div>
 
-                  <div className="flex items-center gap-3 shrink-0">
-                    <a
-                      href={ecommerceProject.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold flex items-center gap-2 shadow-md shadow-blue-600/30 transition-all cursor-pointer"
-                    >
-                      <Github className="w-4 h-4" />
-                      <span>View Repository</span>
-                    </a>
-                  </div>
-                </div>
-
-                {/* Scope Notice */}
-                <div className={`p-4 rounded-xl border text-xs flex items-start gap-3 ${
-                  isDark 
-                    ? 'bg-slate-900/60 border-slate-800 text-slate-300' 
-                    : 'bg-slate-50 border-slate-200 text-slate-700'
-                }`}>
-                  <ShieldCheck className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
+                  {/* Compact Technology Badges */}
                   <div>
-                    <strong className="font-semibold block mb-0.5">Project Scope:</strong>
-                    {ecommerceProject.scopeNote}
+                    <div className="text-[11px] font-mono uppercase tracking-wider text-slate-400 font-semibold mb-2.5">
+                      Technologies Applied:
+                    </div>
+                    <div className="flex flex-wrap gap-1.5">
+                      {project.technologies.map((tech) => (
+                        <span
+                          key={tech}
+                          className={`px-2.5 py-1 rounded-md text-xs font-mono font-medium border ${
+                            isDark
+                              ? 'bg-[#0B0F17] text-[#E5E7EB] border-[#30363D]'
+                              : 'bg-slate-50 text-[#0F172A] border-[#E2E8F0]'
+                          }`}
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
                   </div>
+
+                  {/* 3 Concise Implementation Highlights */}
+                  <div className="space-y-3 pt-2">
+                    <div className="text-[11px] font-mono uppercase tracking-wider text-slate-400 font-semibold">
+                      Key Technical Highlights:
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                      {project.highlights.map((highlight, hIdx) => (
+                        <div
+                          key={highlight.category}
+                          className={`p-4 rounded-xl border text-xs space-y-2 transition-colors ${
+                            isDark
+                              ? 'bg-[#0B0F17]/70 border-[#30363D]/80'
+                              : 'bg-[#F8FAFC] border-[#E2E8F0]'
+                          }`}
+                        >
+                          <div className={`font-semibold text-xs flex items-center gap-1.5 ${
+                            isDark ? 'text-emerald-400' : 'text-emerald-700'
+                          }`}>
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                            <span>{highlight.category}</span>
+                          </div>
+                          <ul className="space-y-1.5">
+                            {highlight.points.map((pt, pIdx) => (
+                              <li key={pIdx} className={`text-xs leading-relaxed ${
+                                isDark ? 'text-[#94A3B8]' : 'text-[#475569]'
+                              }`}>
+                                {pt}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
                 </div>
-
-                {/* Technology Badges */}
-                <div>
-                  <div className="text-xs font-mono uppercase tracking-wider text-slate-400 font-bold mb-3">
-                    Technologies Applied:
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {ecommerceProject.technologies.map((tech) => (
-                      <span
-                        key={tech}
-                        className={`px-3 py-1 rounded-lg text-xs font-mono font-medium border ${
-                          isDark 
-                            ? 'bg-slate-900 border-slate-800 text-slate-200' 
-                            : 'bg-slate-100 border-slate-200 text-slate-800'
-                        }`}
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Detailed Contribution Bullets */}
-                <div className="space-y-3 pt-2">
-                  <div className="text-xs font-mono uppercase tracking-wider text-slate-400 font-bold">
-                    Key Features & Integration:
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {ecommerceProject.contributedAreas.map((area, idx) => (
-                      <div 
-                        key={idx}
-                        className={`p-3.5 rounded-xl border flex items-start gap-2.5 text-xs sm:text-sm leading-relaxed ${
-                          isDark 
-                            ? 'bg-slate-900/60 border-slate-800/80 text-slate-300' 
-                            : 'bg-slate-50 border-slate-200 text-slate-700'
-                        }`}
-                      >
-                        <CheckCircle2 className="w-4 h-4 text-indigo-400 shrink-0 mt-0.5" />
-                        <span>{area}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-              </div>
-            </TiltCard>
-          )}
-
+              </TiltProjectCard>
+            );
+          })}
         </div>
 
       </div>
-
-      {/* Interactive Microservice Architecture Modal */}
-      {selectedProject && (
-        <ArchitectureModal
-          project={selectedProject}
-          isOpen={!!selectedProject}
-          onClose={() => setSelectedProject(null)}
-        />
-      )}
     </section>
   );
 }

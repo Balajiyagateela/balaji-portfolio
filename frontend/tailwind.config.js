@@ -9,26 +9,40 @@ export default {
     extend: {
       colors: {
         dark: {
-          bg: '#030712',
-          surface: '#080d1a',
-          card: '#0c1324',
-          cardHover: '#101a33',
-          border: 'rgba(59, 130, 246, 0.15)',
-          borderHover: 'rgba(59, 130, 246, 0.4)',
+          bg: '#0B0F17',
+          surface: '#111722',
+          card: '#161B22',
+          cardHover: '#1C2128',
+          border: '#30363D',
+          borderHover: '#484F58',
+          text: '#E5E7EB',
+          textMuted: '#94A3B8',
         },
         light: {
-          bg: '#f8fafc',
-          surface: '#ffffff',
-          card: '#ffffff',
-          cardHover: '#f1f5f9',
-          border: '#e2e8f0',
-          borderHover: '#93c5fd',
+          bg: '#F3F4F6',
+          surface: '#F8FAFC',
+          card: '#FFFFFF',
+          cardHover: '#FFFFFF',
+          border: '#E2E8F0',
+          borderHover: '#CBD5E1',
+          text: '#0F172A',
+          textMuted: '#64748B',
         },
-        blue: {
-          royal: '#1d4ed8',
-          electric: '#2563eb',
-          neon: '#3b82f6',
-          glow: '#60a5fa',
+        emerald: {
+          DEFAULT: '#10B981',
+          50: '#ECFDF5',
+          100: '#D1FAE5',
+          200: '#A7F3D0',
+          300: '#6EE7B7',
+          400: '#34D399',
+          500: '#10B981',
+          600: '#059669',
+          700: '#047857',
+          800: '#065F46',
+          900: '#064E3B',
+        },
+        cyan: {
+          subtle: '#38BDF8',
         }
       },
       fontFamily: {
@@ -36,20 +50,14 @@ export default {
         mono: ['JetBrains Mono', 'Fira Code', 'Consolas', 'monospace'],
       },
       boxShadow: {
-        'glow-sm': '0 0 15px -3px rgba(59, 130, 246, 0.25)',
-        'glow-md': '0 0 30px -5px rgba(59, 130, 246, 0.3)',
-        'glow-lg': '0 0 50px -10px rgba(59, 130, 246, 0.35)',
-        'glow-card': '0 4px 20px -2px rgba(3, 7, 18, 0.8), 0 0 15px -3px rgba(37, 99, 235, 0.15)',
+        'card-light': '0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.06)',
+        'card-light-hover': '0 8px 20px -4px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04)',
+        'card-dark': '0 4px 20px -2px rgba(0, 0, 0, 0.5)',
+        'card-dark-hover': '0 8px 30px -4px rgba(0, 0, 0, 0.7)',
+        'emerald-subtle': '0 0 20px -3px rgba(16, 185, 129, 0.25)',
       },
-      animation: {
-        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'float': 'float 6s ease-in-out infinite',
-      },
-      keyframes: {
-        float: {
-          '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-8px)' },
-        }
+      transitionTimingFunction: {
+        'premium': 'cubic-bezier(0.16, 1, 0.3, 1)',
       }
     },
   },

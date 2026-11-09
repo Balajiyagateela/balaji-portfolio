@@ -13,8 +13,7 @@ import {
   Terminal, 
   ExternalLink,
   ShieldAlert,
-  Loader2,
-  Sparkles
+  Loader2
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import confetti from 'canvas-confetti';
@@ -38,7 +37,6 @@ export default function Contact() {
   const [statusFeedback, setStatusFeedback] = useState(null);
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [copiedPhone, setCopiedPhone] = useState(false);
-  const [copiedMessage, setCopiedMessage] = useState(false);
   const [toast, setToast] = useState(null);
 
   const handleChange = (e) => {
@@ -99,16 +97,16 @@ export default function Contact() {
         // Trigger celebratory confetti
         try {
           confetti({
-            particleCount: 80,
+            particleCount: 70,
             spread: 60,
             origin: { y: 0.7 },
-            colors: ['#2563eb', '#3b82f6', '#60a5fa', '#10b981'],
+            colors: ['#10B981', '#059669', '#34D399', '#38BDF8'],
           });
         } catch (_) {}
 
         setStatusFeedback({
           type: 'success',
-          message: result.message || 'Your message has been sent successfully via SMTP!',
+          message: result.message || 'Your message has been sent successfully!',
         });
         setToast({
           type: 'success',
@@ -118,12 +116,12 @@ export default function Contact() {
       } else if (result.code === 'SMTP_NOT_CONFIGURED') {
         setStatusFeedback({
           type: 'unconfigured',
-          message: result.message || 'SMTP service is not configured on this server environment.',
+          message: result.message || 'SMTP service is currently not configured on this server environment.',
           directEmail: result.directEmail || personalDetails.email,
         });
         setToast({
           type: 'warning',
-          message: 'Server SMTP is unconfigured. Direct mail client option is ready.',
+          message: 'Server mail is unconfigured. Direct email client link is ready below.',
         });
       } else if (result.errors) {
         setFieldErrors(result.errors);
@@ -134,14 +132,14 @@ export default function Contact() {
       } else {
         setStatusFeedback({
           type: 'error',
-          message: result.error || 'Failed to submit contact message. Please try emailing directly.',
+          message: result.error || 'Failed to submit message. Please try emailing directly.',
           directEmail: result.directEmail || personalDetails.email,
         });
       }
     } catch (err) {
       setStatusFeedback({
         type: 'error',
-        message: 'An unexpected connection error occurred. Please email directly.',
+        message: 'An unexpected connection error occurred. Please reach out directly via email.',
         directEmail: personalDetails.email,
       });
     } finally {
@@ -155,72 +153,67 @@ export default function Contact() {
     `From: ${formData.name || 'Visitor'}\nEmail: ${formData.email || ''}\n\n${formData.message || ''}`
   )}`;
 
-  const copyPreparedMessage = () => {
-    const text = `Subject: ${formData.subject}\nFrom: ${formData.name} <${formData.email}>\n\n${formData.message}`;
-    navigator.clipboard.writeText(text);
-    setCopiedMessage(true);
-    setTimeout(() => setCopiedMessage(false), 2000);
-  };
-
   return (
     <section 
       id="contact" 
-      className={`py-24 relative border-t transition-colors duration-300 ${
-        isDark ? 'bg-[#030712] border-blue-950/60' : 'bg-white border-slate-200'
+      className={`py-20 relative border-t transition-colors ${
+        isDark ? 'bg-[#0B0F17] border-[#30363D]/60' : 'bg-[#F3F4F6] border-[#E2E8F0]'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="max-w-3xl mb-14">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-600/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 text-xs font-mono font-semibold mb-3">
-            <Terminal className="w-3.5 h-3.5" />
-            <span>05 // GET IN TOUCH</span>
-          </div>
-          <h2 className={`text-3xl sm:text-4xl font-extrabold tracking-tight ${
-            isDark ? 'text-white' : 'text-slate-900'
+        <div className="max-w-2xl mb-12">
+          <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium mb-3 border transition-colors ${
+            isDark 
+              ? 'bg-[#161B22] border-[#30363D] text-emerald-400' 
+              : 'bg-white border-[#E2E8F0] text-emerald-600 shadow-sm'
           }`}>
-            Contact & Inquiries
+            <Terminal className="w-3.5 h-3.5" />
+            <span>05 // CONTACT</span>
+          </div>
+          <h2 className={`text-3xl sm:text-4xl font-bold tracking-tight ${
+            isDark ? 'text-[#E5E7EB]' : 'text-[#0F172A]'
+          }`}>
+            Get In Touch
           </h2>
-          <p className="mt-2 text-slate-500 dark:text-slate-400 text-sm font-mono">
-            Have an open Python / FastAPI backend engineering opportunity? Reach out directly below.
+          <p className={`mt-2 text-sm sm:text-base leading-relaxed ${
+            isDark ? 'text-[#94A3B8]' : 'text-[#475569]'
+          }`}>
+            Have an open Python or FastAPI backend role, project, or technical question? Feel free to reach out directly.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
           {/* Left Column: Direct Channels & Information */}
           <motion.div 
-            initial={{ opacity: 0, x: -20 }}
+            initial={{ opacity: 0, x: -16 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-5 space-y-6"
           >
-            {/* Primary Email Card */}
-            <div className={`p-7 rounded-2xl border space-y-4 ${
+            {/* Contact Details Card */}
+            <div className={`p-6 rounded-2xl border portfolio-card space-y-4 ${
               isDark 
-                ? 'bg-[#080d1a] border-blue-900/40 shadow-xl' 
-                : 'bg-slate-50 border-slate-200 shadow-md'
+                ? 'bg-[#161B22] border-[#30363D] shadow-card-dark' 
+                : 'bg-white border-[#E2E8F0] shadow-card-light'
             }`}>
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-mono uppercase tracking-wider text-slate-400 font-bold">
-                  Direct Email
-                </span>
-                <span className="text-xs px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 font-bold">
-                  Primary
-                </span>
-              </div>
+              <span className="text-xs font-mono uppercase tracking-wider text-slate-400 font-semibold block">
+                Direct Contact Channels
+              </span>
 
-              <div className={`flex items-center justify-between gap-3 p-3.5 rounded-xl border ${
-                isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
+              {/* Email Row */}
+              <div className={`flex items-center justify-between gap-3 p-3 rounded-xl border ${
+                isDark ? 'bg-[#0B0F17] border-[#30363D]' : 'bg-[#F8FAFC] border-[#E2E8F0]'
               }`}>
                 <div className="flex items-center gap-2.5 overflow-hidden">
-                  <Mail className="w-4 h-4 text-blue-500 shrink-0" />
+                  <Mail className="w-4 h-4 text-emerald-500 shrink-0" />
                   <a
                     href={`mailto:${personalDetails.email}`}
-                    className={`text-xs sm:text-sm font-mono truncate hover:text-blue-500 transition-colors ${
-                      isDark ? 'text-slate-200' : 'text-slate-800'
+                    className={`text-xs sm:text-sm font-mono truncate hover:text-emerald-500 transition-colors ${
+                      isDark ? 'text-[#E5E7EB]' : 'text-[#0F172A]'
                     }`}
                   >
                     {personalDetails.email}
@@ -228,24 +221,24 @@ export default function Contact() {
                 </div>
                 <button
                   onClick={copyEmailAddress}
-                  className="p-1.5 rounded-lg bg-blue-600/10 text-blue-500 hover:bg-blue-600/20 transition-colors shrink-0 cursor-pointer"
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-emerald-500 transition-colors shrink-0 cursor-pointer"
                   title="Copy email address"
                   aria-label="Copy email"
                 >
-                  {copiedEmail ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                  {copiedEmail ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
                 </button>
               </div>
 
-              {/* Phone Card */}
-              <div className={`flex items-center justify-between gap-3 p-3.5 rounded-xl border ${
-                isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
+              {/* Phone Row */}
+              <div className={`flex items-center justify-between gap-3 p-3 rounded-xl border ${
+                isDark ? 'bg-[#0B0F17] border-[#30363D]' : 'bg-[#F8FAFC] border-[#E2E8F0]'
               }`}>
                 <div className="flex items-center gap-2.5">
-                  <Phone className="w-4 h-4 text-blue-500 shrink-0" />
+                  <Phone className="w-4 h-4 text-emerald-500 shrink-0" />
                   <a
                     href={`tel:${personalDetails.phone.replace(/\s+/g, '')}`}
-                    className={`text-xs sm:text-sm font-mono hover:text-blue-500 transition-colors ${
-                      isDark ? 'text-slate-200' : 'text-slate-800'
+                    className={`text-xs sm:text-sm font-mono hover:text-emerald-500 transition-colors ${
+                      isDark ? 'text-[#E5E7EB]' : 'text-[#0F172A]'
                     }`}
                   >
                     {personalDetails.phone}
@@ -253,38 +246,39 @@ export default function Contact() {
                 </div>
                 <button
                   onClick={copyPhoneNumber}
-                  className="p-1.5 rounded-lg bg-blue-600/10 text-blue-500 hover:bg-blue-600/20 transition-colors shrink-0 cursor-pointer"
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-emerald-500 transition-colors shrink-0 cursor-pointer"
                   title="Copy phone number"
                   aria-label="Copy phone"
                 >
-                  {copiedPhone ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                  {copiedPhone ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
                 </button>
               </div>
 
-              <div className="flex items-center gap-2 text-xs font-mono text-slate-500 dark:text-slate-400">
-                <MapPin className="w-3.5 h-3.5 text-blue-500" />
-                <span>Location: {personalDetails.location}</span>
+              {/* Location Row */}
+              <div className="flex items-center gap-2 text-xs font-mono text-slate-500 pt-1">
+                <MapPin className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+                <span>{personalDetails.location}</span>
               </div>
             </div>
 
-            {/* Social & Professional Links */}
-            <div className={`p-7 rounded-2xl border space-y-3.5 ${
+            {/* Profiles Card */}
+            <div className={`p-6 rounded-2xl border portfolio-card space-y-3 ${
               isDark 
-                ? 'bg-[#080d1a] border-blue-900/40 shadow-xl' 
-                : 'bg-slate-50 border-slate-200 shadow-md'
+                ? 'bg-[#161B22] border-[#30363D] shadow-card-dark' 
+                : 'bg-white border-[#E2E8F0] shadow-card-light'
             }`}>
-              <span className="text-xs font-mono uppercase tracking-wider text-slate-400 font-bold block">
-                Professional Profiles
+              <span className="text-xs font-mono uppercase tracking-wider text-slate-400 font-semibold block">
+                Profiles & Repositories
               </span>
 
               <a
                 href={personalDetails.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`flex items-center justify-between p-3.5 rounded-xl border text-xs font-mono font-medium transition-all ${
+                className={`flex items-center justify-between p-3 rounded-xl border text-xs font-mono transition-colors ${
                   isDark 
-                    ? 'bg-slate-900 border-slate-800 text-slate-200 hover:border-blue-500 hover:text-white' 
-                    : 'bg-white border-slate-200 text-slate-800 hover:border-blue-400'
+                    ? 'bg-[#0B0F17] border-[#30363D] text-[#E5E7EB] hover:border-emerald-500/50 hover:text-emerald-400' 
+                    : 'bg-[#F8FAFC] border-[#E2E8F0] text-[#0F172A] hover:border-emerald-300 hover:text-emerald-600'
                 }`}
               >
                 <div className="flex items-center gap-2.5">
@@ -298,110 +292,100 @@ export default function Contact() {
                 href={personalDetails.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`flex items-center justify-between p-3.5 rounded-xl border text-xs font-mono font-medium transition-all ${
+                className={`flex items-center justify-between p-3 rounded-xl border text-xs font-mono transition-colors ${
                   isDark 
-                    ? 'bg-slate-900 border-slate-800 text-slate-200 hover:border-blue-500 hover:text-white' 
-                    : 'bg-white border-slate-200 text-slate-800 hover:border-blue-400'
+                    ? 'bg-[#0B0F17] border-[#30363D] text-[#E5E7EB] hover:border-emerald-500/50 hover:text-emerald-400' 
+                    : 'bg-[#F8FAFC] border-[#E2E8F0] text-[#0F172A] hover:border-emerald-300 hover:text-emerald-600'
                 }`}
               >
                 <div className="flex items-center gap-2.5">
-                  <Linkedin className="w-4 h-4 text-blue-500" />
-                  <span>linkedin.com/in/balaji-yagateela-059922253</span>
+                  <Linkedin className="w-4 h-4 text-cyan-subtle" />
+                  <span>LinkedIn Profile</span>
                 </div>
                 <ExternalLink className="w-3.5 h-3.5 opacity-60" />
               </a>
             </div>
 
-            {/* Stateless Backend Architecture Disclaimer */}
-            <div className={`p-4 rounded-xl border text-xs leading-relaxed ${
-              isDark 
-                ? 'bg-slate-950/60 border-slate-800/80 text-slate-500' 
-                : 'bg-slate-100 border-slate-200 text-slate-600'
-            }`}>
-              <strong className="block mb-0.5 text-blue-500 font-mono">Stateless Transmission Notice:</strong>
-              This application has zero database persistence. Form submissions are dispatched directly via SMTP or available for one-click mail client transmission.
-            </div>
-
           </motion.div>
 
-          {/* Right Column: Functional Contact Form */}
+          {/* Right Column: Contact Form */}
           <motion.div 
-            initial={{ opacity: 0, x: 20 }}
+            initial={{ opacity: 0, x: 16 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+            transition={{ duration: 0.4, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-7"
           >
-            <div className={`p-7 sm:p-9 rounded-3xl border shadow-xl ${
+            <div className={`p-6 sm:p-8 rounded-2xl border portfolio-card ${
               isDark 
-                ? 'bg-[#080d1a] border-blue-900/40 shadow-black/40' 
-                : 'bg-white border-slate-200 shadow-slate-200/50'
+                ? 'bg-[#161B22] border-[#30363D] shadow-card-dark' 
+                : 'bg-white border-[#E2E8F0] shadow-card-light'
             }`}>
-              <div className="mb-6 pb-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+              <div className={`mb-6 pb-4 border-b flex items-center justify-between ${
+                isDark ? 'border-[#30363D]/80' : 'border-[#E2E8F0]'
+              }`}>
                 <div>
-                  <h3 className={`text-xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                    Send an Inquiry
+                  <h3 className={`text-lg font-bold tracking-tight ${
+                    isDark ? 'text-[#E5E7EB]' : 'text-[#0F172A]'
+                  }`}>
+                    Send a Message
                   </h3>
-                  <p className="text-xs font-mono text-blue-500 dark:text-blue-400 mt-0.5">
-                    POST /api/contact • Rate-limited & Sanitized
+                  <p className={`text-xs mt-0.5 ${isDark ? 'text-[#94A3B8]' : 'text-[#64748B]'}`}>
+                    I'll respond promptly to backend engineering inquiries.
                   </p>
                 </div>
-                <div className="w-9 h-9 rounded-xl bg-blue-600/10 text-blue-500 flex items-center justify-center">
+                <div className={`w-9 h-9 rounded-lg flex items-center justify-center border ${
+                  isDark 
+                    ? 'bg-[#0B0F17] border-[#30363D] text-emerald-400' 
+                    : 'bg-emerald-50 border-emerald-100 text-emerald-600'
+                }`}>
                   <Send className="w-4 h-4" />
                 </div>
               </div>
 
               {/* Status Feedback Banners */}
               {statusFeedback && (
-                <div className="mb-6">
+                <div className="mb-5">
                   {statusFeedback.type === 'success' && (
-                    <div className="p-4 rounded-xl bg-emerald-950/40 border border-emerald-500/40 text-emerald-200 text-xs flex items-start gap-3">
-                      <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+                    <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs flex items-start gap-2.5">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                       <div>
-                        <strong className="block text-emerald-300 font-semibold mb-0.5">Message Delivered!</strong>
+                        <strong className="block font-semibold mb-0.5">Message Delivered</strong>
                         {statusFeedback.message}
                       </div>
                     </div>
                   )}
 
                   {statusFeedback.type === 'unconfigured' && (
-                    <div className="p-4 rounded-xl bg-amber-950/40 border border-amber-500/40 text-amber-200 text-xs space-y-3">
-                      <div className="flex items-start gap-3">
-                        <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+                    <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs space-y-2">
+                      <div className="flex items-start gap-2.5">
+                        <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
                         <div>
-                          <strong className="block text-amber-300 font-semibold mb-0.5">SMTP Unconfigured Notice:</strong>
+                          <strong className="block font-semibold mb-0.5">Notice:</strong>
                           {statusFeedback.message}
                         </div>
                       </div>
-                      <div className="pt-2 border-t border-amber-800/40 flex flex-wrap items-center gap-3">
+                      <div className="pt-2">
                         <a
                           href={mailtoLink}
-                          className="px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 transition-colors"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold text-xs transition-colors"
                         >
                           <Mail className="w-3.5 h-3.5" />
-                          <span>Open in Mail Client</span>
+                          <span>Open in Email Client</span>
                         </a>
-                        <button
-                          type="button"
-                          onClick={copyPreparedMessage}
-                          className="px-4 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-amber-200 border border-amber-600/40 text-xs font-mono flex items-center gap-1.5 cursor-pointer"
-                        >
-                          {copiedMessage ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-                          <span>{copiedMessage ? 'Copied' : 'Copy Message Text'}</span>
-                        </button>
                       </div>
                     </div>
                   )}
 
                   {statusFeedback.type === 'error' && (
-                    <div className="p-4 rounded-xl bg-rose-950/40 border border-rose-500/40 text-rose-200 text-xs flex items-start gap-3">
-                      <ShieldAlert className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
+                    <div className="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs flex items-start gap-2.5">
+                      <ShieldAlert className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
                       <div>
-                        <strong className="block text-rose-300 font-semibold mb-0.5">Delivery Notice:</strong>
+                        <strong className="block font-semibold mb-0.5">Error:</strong>
                         {statusFeedback.message}
-                        <div className="mt-2">
-                          <a href={mailtoLink} className="text-blue-400 underline font-mono text-xs">
-                            Click here to email directly via your mail client →
+                        <div className="mt-1.5">
+                          <a href={mailtoLink} className="text-emerald-400 underline font-mono text-xs">
+                            Send directly via email →
                           </a>
                         </div>
                       </div>
@@ -410,26 +394,28 @@ export default function Contact() {
                 </div>
               )}
 
-              {/* Form Element */}
+              {/* Contact Form Element */}
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Name */}
                   <div className="space-y-1">
-                    <label className={`block text-xs font-mono font-semibold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                      Your Name <span className="text-rose-500">*</span>
+                    <label className={`block text-xs font-mono font-medium ${
+                      isDark ? 'text-[#E5E7EB]' : 'text-[#0F172A]'
+                    }`}>
+                      Name <span className="text-emerald-500">*</span>
                     </label>
                     <input
                       type="text"
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                      placeholder="e.g. Alex Johnson"
-                      className={`w-full px-4 py-2.5 rounded-xl border text-xs focus:outline-none transition-colors ${
+                      placeholder="Alex Johnson"
+                      className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none transition-colors ${
                         fieldErrors.name
                           ? 'border-rose-500 bg-rose-500/10'
                           : isDark
-                            ? 'bg-slate-900 border-slate-800 text-white focus:border-blue-500'
-                            : 'bg-slate-50 border-slate-200 text-slate-900 focus:border-blue-500'
+                            ? 'bg-[#0B0F17] border-[#30363D] text-[#E5E7EB] focus:border-emerald-500'
+                            : 'bg-white border-[#E2E8F0] text-[#0F172A] focus:border-emerald-500'
                       }`}
                     />
                     {fieldErrors.name && (
@@ -439,21 +425,23 @@ export default function Contact() {
 
                   {/* Email */}
                   <div className="space-y-1">
-                    <label className={`block text-xs font-mono font-semibold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                      Your Email <span className="text-rose-500">*</span>
+                    <label className={`block text-xs font-mono font-medium ${
+                      isDark ? 'text-[#E5E7EB]' : 'text-[#0F172A]'
+                    }`}>
+                      Email <span className="text-emerald-500">*</span>
                     </label>
                     <input
                       type="email"
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      placeholder="e.g. alex@company.com"
-                      className={`w-full px-4 py-2.5 rounded-xl border text-xs focus:outline-none transition-colors ${
+                      placeholder="alex@company.com"
+                      className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none transition-colors ${
                         fieldErrors.email
                           ? 'border-rose-500 bg-rose-500/10'
                           : isDark
-                            ? 'bg-slate-900 border-slate-800 text-white focus:border-blue-500'
-                            : 'bg-slate-50 border-slate-200 text-slate-900 focus:border-blue-500'
+                            ? 'bg-[#0B0F17] border-[#30363D] text-[#E5E7EB] focus:border-emerald-500'
+                            : 'bg-white border-[#E2E8F0] text-[#0F172A] focus:border-emerald-500'
                       }`}
                     />
                     {fieldErrors.email && (
@@ -464,21 +452,23 @@ export default function Contact() {
 
                 {/* Subject */}
                 <div className="space-y-1">
-                  <label className={`block text-xs font-mono font-semibold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                    Subject <span className="text-rose-500">*</span>
+                  <label className={`block text-xs font-mono font-medium ${
+                    isDark ? 'text-[#E5E7EB]' : 'text-[#0F172A]'
+                  }`}>
+                    Subject <span className="text-emerald-500">*</span>
                   </label>
                   <input
                     type="text"
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
-                    placeholder="e.g. Python Backend Developer Role / FastAPI Project"
-                    className={`w-full px-4 py-2.5 rounded-xl border text-xs focus:outline-none transition-colors ${
+                    placeholder="Python Backend Developer Role / Inquiry"
+                    className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none transition-colors ${
                       fieldErrors.subject
                         ? 'border-rose-500 bg-rose-500/10'
                         : isDark
-                          ? 'bg-slate-900 border-slate-800 text-white focus:border-blue-500'
-                          : 'bg-slate-50 border-slate-200 text-slate-900 focus:border-blue-500'
+                          ? 'bg-[#0B0F17] border-[#30363D] text-[#E5E7EB] focus:border-emerald-500'
+                          : 'bg-white border-[#E2E8F0] text-[#0F172A] focus:border-emerald-500'
                     }`}
                   />
                   {fieldErrors.subject && (
@@ -488,21 +478,23 @@ export default function Contact() {
 
                 {/* Message */}
                 <div className="space-y-1">
-                  <label className={`block text-xs font-mono font-semibold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                    Message <span className="text-rose-500">*</span>
+                  <label className={`block text-xs font-mono font-medium ${
+                    isDark ? 'text-[#E5E7EB]' : 'text-[#0F172A]'
+                  }`}>
+                    Message <span className="text-emerald-500">*</span>
                   </label>
                   <textarea
                     name="message"
-                    rows={5}
+                    rows={4}
                     value={formData.message}
                     onChange={handleChange}
-                    placeholder="Describe the engineering role, project requirements, or inquiry..."
-                    className={`w-full px-4 py-2.5 rounded-xl border text-xs focus:outline-none transition-colors resize-y ${
+                    placeholder="Describe the opportunity or project details..."
+                    className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none transition-colors resize-y ${
                       fieldErrors.message
                         ? 'border-rose-500 bg-rose-500/10'
                         : isDark
-                          ? 'bg-slate-900 border-slate-800 text-white focus:border-blue-500'
-                          : 'bg-slate-50 border-slate-200 text-slate-900 focus:border-blue-500'
+                          ? 'bg-[#0B0F17] border-[#30363D] text-[#E5E7EB] focus:border-emerald-500'
+                          : 'bg-white border-[#E2E8F0] text-[#0F172A] focus:border-emerald-500'
                     }`}
                   />
                   {fieldErrors.message && (
@@ -510,21 +502,17 @@ export default function Contact() {
                   )}
                 </div>
 
-                {/* Form Actions */}
-                <div className="pt-2 flex items-center justify-between flex-wrap gap-4">
-                  <span className="text-[11px] font-mono text-slate-400">
-                    * Stateless transmission • Zero database retention
-                  </span>
-
+                {/* Form Action */}
+                <div className="pt-2 flex justify-end">
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 disabled:bg-blue-800 text-white font-bold text-xs flex items-center gap-2 shadow-lg shadow-blue-600/30 transition-all cursor-pointer disabled:cursor-not-allowed"
+                    className="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 disabled:bg-emerald-800 text-white font-medium text-xs flex items-center gap-2 shadow-sm transition-all duration-200 cursor-pointer disabled:cursor-not-allowed"
                   >
                     {isSubmitting ? (
                       <>
                         <Loader2 className="w-4 h-4 animate-spin" />
-                        <span>Sending message...</span>
+                        <span>Sending...</span>
                       </>
                     ) : (
                       <>

@@ -49,7 +49,7 @@ export const sendContactMessage = async (formData) => {
         error: error.response.data?.error || 'Server error occurred.',
         message: error.response.data?.message,
         errors: error.response.data?.errors,
-        directEmail: error.response.data?.directEmail || 'rajbalajiyagateela@gmail.com',
+        directEmail: error.response.data?.directEmail || 'yagateelabalaji@gmail.com',
       };
     } else if (error.request) {
       // Network error (server offline / unreachable)
@@ -58,7 +58,7 @@ export const sendContactMessage = async (formData) => {
         status: 0,
         code: 'NETWORK_ERROR',
         error: 'Unable to reach backend API. The backend server might be offline or undergoing deployment.',
-        directEmail: 'rajbalajiyagateela@gmail.com',
+        directEmail: 'yagateelabalaji@gmail.com',
       };
     } else {
       return {
@@ -66,7 +66,7 @@ export const sendContactMessage = async (formData) => {
         status: 500,
         code: 'CLIENT_ERROR',
         error: error.message,
-        directEmail: 'rajbalajiyagateela@gmail.com',
+        directEmail: 'yagateelabalaji@gmail.com',
       };
     }
   }
