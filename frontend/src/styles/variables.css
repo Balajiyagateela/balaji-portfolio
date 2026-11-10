@@ -1,0 +1,35 @@
+:root {
+  --background: #111318;
+  --surface: #191d24;
+  --surface-secondary: #202630;
+  --text-primary: #f4f2ed;
+  --text-secondary: #a4a9b2;
+  --text-muted: #6b7280;
+  --accent: #c5a46d;
+  --accent-hover: #d4b680;
+  --accent-subtle: rgba(197, 164, 109, 0.12);
+  --border: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(197, 164, 109, 0.4);
+  --cursor-primary: #c5a46d;
+  --cursor-secondary: rgba(197, 164, 109, 0.18);
+  --card-shadow: 0 8px 30px -4px rgba(0, 0, 0, 0.6);
+  --font-heading: 'Space Grotesk', -apple-system, sans-serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+}
+
+html:not(.dark) {
+  --background: #f7f6f2;
+  --surface: #ffffff;
+  --surface-secondary: #eeebe3;
+  --text-primary: #191d24;
+  --text-secondary: #5c6470;
+  --text-muted: #8b929e;
+  --accent: #9e7d44;
+  --accent-hover: #866835;
+  --accent-subtle: rgba(158, 125, 68, 0.12);
+  --border: rgba(0, 0, 0, 0.08);
+  --border-hover: rgba(158, 125, 68, 0.4);
+  --cursor-primary: #9e7d44;
+  --cursor-secondary: rgba(158, 125, 68, 0.18);
+  --card-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.07);
+}

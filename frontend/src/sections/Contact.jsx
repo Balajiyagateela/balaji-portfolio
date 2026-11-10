@@ -1,30 +1,13 @@
 import React, { useState } from 'react';
-import { 
-  Mail, 
-  Send, 
-  Github, 
-  Linkedin, 
-  MapPin, 
-  Phone, 
-  Copy, 
-  Check, 
-  AlertTriangle, 
-  CheckCircle2, 
-  Terminal, 
-  ExternalLink,
-  ShieldAlert,
-  Loader2
-} from 'lucide-react';
+import { Mail, Send, Github, Linkedin, MapPin, Phone, Copy, Check, AlertTriangle, CheckCircle2, Terminal, ExternalLink, ShieldAlert, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import { personalDetails } from '../data/portfolioData';
 import { sendContactMessage } from '../services/api';
-import { useTheme } from '../context/ThemeContext';
+import MagneticButton from '../components/MagneticButton';
 import Toast from '../components/Toast';
 
 export default function Contact() {
-  const { isDark } = useTheme();
-
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -68,7 +51,6 @@ export default function Contact() {
     setStatusFeedback(null);
     setFieldErrors({});
 
-    // Client-side quick validation
     const errors = {};
     if (!formData.name.trim()) errors.name = 'Please provide your name.';
     if (!formData.email.trim()) {
@@ -80,7 +62,7 @@ export default function Contact() {
     if (!formData.message.trim()) {
       errors.message = 'Message is required.';
     } else if (formData.message.trim().length < 10) {
-      errors.message = 'Please write at least 10 characters so I have context for your message.';
+      errors.message = 'Please write at least 10 characters.';
     }
 
     if (Object.keys(errors).length > 0) {
@@ -94,13 +76,12 @@ export default function Contact() {
       const result = await sendContactMessage(formData);
 
       if (result.success) {
-        // Trigger celebratory confetti
         try {
           confetti({
             particleCount: 70,
             spread: 60,
             origin: { y: 0.7 },
-            colors: ['#10B981', '#059669', '#34D399', '#38BDF8'],
+            colors: ['#c5a46d', '#d4b680', '#e5c99b', '#10B981'],
           });
         } catch (_) {}
 
@@ -121,7 +102,7 @@ export default function Contact() {
         });
         setToast({
           type: 'warning',
-          message: 'Server mail is unconfigured. Direct email client link is ready below.',
+          message: 'Server mail is unconfigured. Direct email link is ready below.',
         });
       } else if (result.errors) {
         setFieldErrors(result.errors);
@@ -139,7 +120,7 @@ export default function Contact() {
     } catch (err) {
       setStatusFeedback({
         type: 'error',
-        message: 'An unexpected connection error occurred. Please reach out directly via email.',
+        message: 'An unexpected connection error occurred. Please email directly.',
         directEmail: personalDetails.email,
       });
     } finally {
@@ -154,135 +135,105 @@ export default function Contact() {
   )}`;
 
   return (
-    <section 
-      id="contact" 
-      className={`py-20 relative border-t transition-colors ${
-        isDark ? 'bg-[#0B0F17] border-[#30363D]/60' : 'bg-[#F3F4F6] border-[#E2E8F0]'
-      }`}
+    <section
+      id="contact"
+      className="py-24 relative border-t border-[var(--border)]"
     >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="bs-container">
         
         {/* Section Header */}
         <div className="max-w-2xl mb-12">
-          <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium mb-3 border transition-colors ${
-            isDark 
-              ? 'bg-[#161B22] border-[#30363D] text-emerald-400' 
-              : 'bg-white border-[#E2E8F0] text-emerald-600 shadow-sm'
-          }`}>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium mb-3 border border-[var(--border)] bg-[var(--surface)] text-[var(--accent)] shadow-sm">
             <Terminal className="w-3.5 h-3.5" />
-            <span>05 // CONTACT</span>
+            <span>06 // CONTACT</span>
           </div>
-          <h2 className={`text-3xl sm:text-4xl font-bold tracking-tight ${
-            isDark ? 'text-[#E5E7EB]' : 'text-[#0F172A]'
-          }`}>
-            Get In Touch
+          <h2 className="text-3xl sm:text-4xl font-heading font-bold tracking-tight text-[var(--text-primary)]">
+            Get in Touch
           </h2>
-          <p className={`mt-2 text-sm sm:text-base leading-relaxed ${
-            isDark ? 'text-[#94A3B8]' : 'text-[#475569]'
-          }`}>
-            Have an open Python or FastAPI backend role, project, or technical question? Feel free to reach out directly.
+          <p className="mt-2 text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed">
+            Interested in working together or discussing backend architecture and opportunities? Feel free to reach out.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
-          {/* Left Column: Direct Channels & Information */}
-          <motion.div 
+          {/* Left Column: Contact Channels & Profiles */}
+          <motion.div
             initial={{ opacity: 0, x: -16 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-5 space-y-6"
           >
-            {/* Contact Details Card */}
-            <div className={`p-6 rounded-2xl border portfolio-card space-y-4 ${
-              isDark 
-                ? 'bg-[#161B22] border-[#30363D] shadow-card-dark' 
-                : 'bg-white border-[#E2E8F0] shadow-card-light'
-            }`}>
-              <span className="text-xs font-mono uppercase tracking-wider text-slate-400 font-semibold block">
-                Direct Contact Channels
+            {/* Direct Details Card */}
+            <div className="p-6 rounded-2xl border border-[var(--border)] bg-[var(--surface)] space-y-4">
+              <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-muted)] font-semibold block">
+                Direct Channels
               </span>
 
-              {/* Email Row */}
-              <div className={`flex items-center justify-between gap-3 p-3 rounded-xl border ${
-                isDark ? 'bg-[#0B0F17] border-[#30363D]' : 'bg-[#F8FAFC] border-[#E2E8F0]'
-              }`}>
+              {/* Email */}
+              <div className="flex items-center justify-between gap-3 p-3 rounded-xl border border-[var(--border)] bg-[var(--surface-secondary)]">
                 <div className="flex items-center gap-2.5 overflow-hidden">
-                  <Mail className="w-4 h-4 text-emerald-500 shrink-0" />
+                  <Mail className="w-4 h-4 text-[var(--accent)] shrink-0" />
                   <a
                     href={`mailto:${personalDetails.email}`}
-                    className={`text-xs sm:text-sm font-mono truncate hover:text-emerald-500 transition-colors ${
-                      isDark ? 'text-[#E5E7EB]' : 'text-[#0F172A]'
-                    }`}
+                    className="text-xs sm:text-sm font-mono truncate text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors"
                   >
                     {personalDetails.email}
                   </a>
                 </div>
                 <button
                   onClick={copyEmailAddress}
-                  className="p-1.5 rounded-lg text-slate-400 hover:text-emerald-500 transition-colors shrink-0 cursor-pointer"
+                  className="p-1.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors shrink-0 cursor-pointer"
                   title="Copy email address"
                   aria-label="Copy email"
                 >
-                  {copiedEmail ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
+                  {copiedEmail ? <Check className="w-4 h-4 text-[var(--accent)]" /> : <Copy className="w-4 h-4" />}
                 </button>
               </div>
 
-              {/* Phone Row */}
-              <div className={`flex items-center justify-between gap-3 p-3 rounded-xl border ${
-                isDark ? 'bg-[#0B0F17] border-[#30363D]' : 'bg-[#F8FAFC] border-[#E2E8F0]'
-              }`}>
+              {/* Phone */}
+              <div className="flex items-center justify-between gap-3 p-3 rounded-xl border border-[var(--border)] bg-[var(--surface-secondary)]">
                 <div className="flex items-center gap-2.5">
-                  <Phone className="w-4 h-4 text-emerald-500 shrink-0" />
+                  <Phone className="w-4 h-4 text-[var(--accent)] shrink-0" />
                   <a
                     href={`tel:${personalDetails.phone.replace(/\s+/g, '')}`}
-                    className={`text-xs sm:text-sm font-mono hover:text-emerald-500 transition-colors ${
-                      isDark ? 'text-[#E5E7EB]' : 'text-[#0F172A]'
-                    }`}
+                    className="text-xs sm:text-sm font-mono text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors"
                   >
                     {personalDetails.phone}
                   </a>
                 </div>
                 <button
                   onClick={copyPhoneNumber}
-                  className="p-1.5 rounded-lg text-slate-400 hover:text-emerald-500 transition-colors shrink-0 cursor-pointer"
+                  className="p-1.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors shrink-0 cursor-pointer"
                   title="Copy phone number"
                   aria-label="Copy phone"
                 >
-                  {copiedPhone ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
+                  {copiedPhone ? <Check className="w-4 h-4 text-[var(--accent)]" /> : <Copy className="w-4 h-4" />}
                 </button>
               </div>
 
-              {/* Location Row */}
-              <div className="flex items-center gap-2 text-xs font-mono text-slate-500 pt-1">
-                <MapPin className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+              {/* Location */}
+              <div className="flex items-center gap-2 text-xs font-mono text-[var(--text-secondary)] pt-1">
+                <MapPin className="w-3.5 h-3.5 text-[var(--accent)] shrink-0" />
                 <span>{personalDetails.location}</span>
               </div>
             </div>
 
-            {/* Profiles Card */}
-            <div className={`p-6 rounded-2xl border portfolio-card space-y-3 ${
-              isDark 
-                ? 'bg-[#161B22] border-[#30363D] shadow-card-dark' 
-                : 'bg-white border-[#E2E8F0] shadow-card-light'
-            }`}>
-              <span className="text-xs font-mono uppercase tracking-wider text-slate-400 font-semibold block">
-                Profiles & Repositories
+            {/* Online Profiles */}
+            <div className="p-6 rounded-2xl border border-[var(--border)] bg-[var(--surface)] space-y-3">
+              <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-muted)] font-semibold block">
+                Profiles
               </span>
 
               <a
                 href={personalDetails.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`flex items-center justify-between p-3 rounded-xl border text-xs font-mono transition-colors ${
-                  isDark 
-                    ? 'bg-[#0B0F17] border-[#30363D] text-[#E5E7EB] hover:border-emerald-500/50 hover:text-emerald-400' 
-                    : 'bg-[#F8FAFC] border-[#E2E8F0] text-[#0F172A] hover:border-emerald-300 hover:text-emerald-600'
-                }`}
+                className="flex items-center justify-between p-3 rounded-xl border border-[var(--border)] bg-[var(--surface-secondary)] text-xs font-mono text-[var(--text-primary)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors"
               >
                 <div className="flex items-center gap-2.5">
-                  <Github className="w-4 h-4 text-slate-400" />
+                  <Github className="w-4 h-4 text-[var(--text-muted)]" />
                   <span>github.com/Balajiyagateela</span>
                 </div>
                 <ExternalLink className="w-3.5 h-3.5 opacity-60" />
@@ -292,14 +243,10 @@ export default function Contact() {
                 href={personalDetails.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`flex items-center justify-between p-3 rounded-xl border text-xs font-mono transition-colors ${
-                  isDark 
-                    ? 'bg-[#0B0F17] border-[#30363D] text-[#E5E7EB] hover:border-emerald-500/50 hover:text-emerald-400' 
-                    : 'bg-[#F8FAFC] border-[#E2E8F0] text-[#0F172A] hover:border-emerald-300 hover:text-emerald-600'
-                }`}
+                className="flex items-center justify-between p-3 rounded-xl border border-[var(--border)] bg-[var(--surface-secondary)] text-xs font-mono text-[var(--text-primary)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors"
               >
                 <div className="flex items-center gap-2.5">
-                  <Linkedin className="w-4 h-4 text-cyan-subtle" />
+                  <Linkedin className="w-4 h-4 text-[var(--accent)]" />
                   <span>LinkedIn Profile</span>
                 </div>
                 <ExternalLink className="w-3.5 h-3.5 opacity-60" />
@@ -309,46 +256,34 @@ export default function Contact() {
           </motion.div>
 
           {/* Right Column: Contact Form */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: 16 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-7"
           >
-            <div className={`p-6 sm:p-8 rounded-2xl border portfolio-card ${
-              isDark 
-                ? 'bg-[#161B22] border-[#30363D] shadow-card-dark' 
-                : 'bg-white border-[#E2E8F0] shadow-card-light'
-            }`}>
-              <div className={`mb-6 pb-4 border-b flex items-center justify-between ${
-                isDark ? 'border-[#30363D]/80' : 'border-[#E2E8F0]'
-              }`}>
+            <div className="p-6 sm:p-8 rounded-2xl border border-[var(--border)] bg-[var(--surface)]">
+              <div className="mb-6 pb-4 border-b border-[var(--border)] flex items-center justify-between">
                 <div>
-                  <h3 className={`text-lg font-bold tracking-tight ${
-                    isDark ? 'text-[#E5E7EB]' : 'text-[#0F172A]'
-                  }`}>
+                  <h3 className="font-heading font-bold text-lg text-[var(--text-primary)]">
                     Send a Message
                   </h3>
-                  <p className={`text-xs mt-0.5 ${isDark ? 'text-[#94A3B8]' : 'text-[#64748B]'}`}>
-                    I'll respond promptly to backend engineering inquiries.
+                  <p className="text-xs text-[var(--text-secondary)] mt-0.5">
+                    Leave your contact details and I'll get back to you.
                   </p>
                 </div>
-                <div className={`w-9 h-9 rounded-lg flex items-center justify-center border ${
-                  isDark 
-                    ? 'bg-[#0B0F17] border-[#30363D] text-emerald-400' 
-                    : 'bg-emerald-50 border-emerald-100 text-emerald-600'
-                }`}>
+                <div className="w-9 h-9 rounded-lg flex items-center justify-center border border-[var(--accent)]/30 bg-[var(--accent-subtle)] text-[var(--accent)]">
                   <Send className="w-4 h-4" />
                 </div>
               </div>
 
-              {/* Status Feedback Banners */}
+              {/* Status Feedback */}
               {statusFeedback && (
                 <div className="mb-5">
                   {statusFeedback.type === 'success' && (
-                    <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs flex items-start gap-2.5">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                    <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs flex items-start gap-2.5">
+                      <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" />
                       <div>
                         <strong className="block font-semibold mb-0.5">Message Delivered</strong>
                         {statusFeedback.message}
@@ -359,7 +294,7 @@ export default function Contact() {
                   {statusFeedback.type === 'unconfigured' && (
                     <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs space-y-2">
                       <div className="flex items-start gap-2.5">
-                        <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                        <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
                         <div>
                           <strong className="block font-semibold mb-0.5">Notice:</strong>
                           {statusFeedback.message}
@@ -368,7 +303,7 @@ export default function Contact() {
                       <div className="pt-2">
                         <a
                           href={mailtoLink}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold text-xs transition-colors"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-[var(--background)] font-semibold text-xs transition-colors"
                         >
                           <Mail className="w-3.5 h-3.5" />
                           <span>Open in Email Client</span>
@@ -379,13 +314,13 @@ export default function Contact() {
 
                   {statusFeedback.type === 'error' && (
                     <div className="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs flex items-start gap-2.5">
-                      <ShieldAlert className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+                      <ShieldAlert className="w-4 h-4 shrink-0 mt-0.5" />
                       <div>
-                        <strong className="block font-semibold mb-0.5">Error:</strong>
+                        <strong className="block font-semibold mb-0.5">Delivery Notice:</strong>
                         {statusFeedback.message}
                         <div className="mt-1.5">
-                          <a href={mailtoLink} className="text-emerald-400 underline font-mono text-xs">
-                            Send directly via email →
+                          <a href={mailtoLink} className="text-[var(--accent)] underline font-mono text-xs">
+                            Send directly via email client →
                           </a>
                         </div>
                       </div>
@@ -394,15 +329,12 @@ export default function Contact() {
                 </div>
               )}
 
-              {/* Contact Form Element */}
+              {/* Form Inputs */}
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {/* Name */}
                   <div className="space-y-1">
-                    <label className={`block text-xs font-mono font-medium ${
-                      isDark ? 'text-[#E5E7EB]' : 'text-[#0F172A]'
-                    }`}>
-                      Name <span className="text-emerald-500">*</span>
+                    <label className="block text-xs font-mono font-medium text-[var(--text-primary)]">
+                      Name <span className="text-[var(--accent)]">*</span>
                     </label>
                     <input
                       type="text"
@@ -413,9 +345,7 @@ export default function Contact() {
                       className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none transition-colors ${
                         fieldErrors.name
                           ? 'border-rose-500 bg-rose-500/10'
-                          : isDark
-                            ? 'bg-[#0B0F17] border-[#30363D] text-[#E5E7EB] focus:border-emerald-500'
-                            : 'bg-white border-[#E2E8F0] text-[#0F172A] focus:border-emerald-500'
+                          : 'border-[var(--border)] bg-[var(--surface-secondary)] text-[var(--text-primary)] focus:border-[var(--accent)]'
                       }`}
                     />
                     {fieldErrors.name && (
@@ -423,12 +353,9 @@ export default function Contact() {
                     )}
                   </div>
 
-                  {/* Email */}
                   <div className="space-y-1">
-                    <label className={`block text-xs font-mono font-medium ${
-                      isDark ? 'text-[#E5E7EB]' : 'text-[#0F172A]'
-                    }`}>
-                      Email <span className="text-emerald-500">*</span>
+                    <label className="block text-xs font-mono font-medium text-[var(--text-primary)]">
+                      Email <span className="text-[var(--accent)]">*</span>
                     </label>
                     <input
                       type="email"
@@ -439,9 +366,7 @@ export default function Contact() {
                       className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none transition-colors ${
                         fieldErrors.email
                           ? 'border-rose-500 bg-rose-500/10'
-                          : isDark
-                            ? 'bg-[#0B0F17] border-[#30363D] text-[#E5E7EB] focus:border-emerald-500'
-                            : 'bg-white border-[#E2E8F0] text-[#0F172A] focus:border-emerald-500'
+                          : 'border-[var(--border)] bg-[var(--surface-secondary)] text-[var(--text-primary)] focus:border-[var(--accent)]'
                       }`}
                     />
                     {fieldErrors.email && (
@@ -450,25 +375,20 @@ export default function Contact() {
                   </div>
                 </div>
 
-                {/* Subject */}
                 <div className="space-y-1">
-                  <label className={`block text-xs font-mono font-medium ${
-                    isDark ? 'text-[#E5E7EB]' : 'text-[#0F172A]'
-                  }`}>
-                    Subject <span className="text-emerald-500">*</span>
+                  <label className="block text-xs font-mono font-medium text-[var(--text-primary)]">
+                    Subject <span className="text-[var(--accent)]">*</span>
                   </label>
                   <input
                     type="text"
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
-                    placeholder="Python Backend Developer Role / Inquiry"
+                    placeholder="Python Backend Role / Collaboration"
                     className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none transition-colors ${
                       fieldErrors.subject
                         ? 'border-rose-500 bg-rose-500/10'
-                        : isDark
-                          ? 'bg-[#0B0F17] border-[#30363D] text-[#E5E7EB] focus:border-emerald-500'
-                          : 'bg-white border-[#E2E8F0] text-[#0F172A] focus:border-emerald-500'
+                        : 'border-[var(--border)] bg-[var(--surface-secondary)] text-[var(--text-primary)] focus:border-[var(--accent)]'
                     }`}
                   />
                   {fieldErrors.subject && (
@@ -476,25 +396,20 @@ export default function Contact() {
                   )}
                 </div>
 
-                {/* Message */}
                 <div className="space-y-1">
-                  <label className={`block text-xs font-mono font-medium ${
-                    isDark ? 'text-[#E5E7EB]' : 'text-[#0F172A]'
-                  }`}>
-                    Message <span className="text-emerald-500">*</span>
+                  <label className="block text-xs font-mono font-medium text-[var(--text-primary)]">
+                    Message <span className="text-[var(--accent)]">*</span>
                   </label>
                   <textarea
                     name="message"
                     rows={4}
                     value={formData.message}
                     onChange={handleChange}
-                    placeholder="Describe the opportunity or project details..."
+                    placeholder="Describe your inquiry, role requirements, or project..."
                     className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none transition-colors resize-y ${
                       fieldErrors.message
                         ? 'border-rose-500 bg-rose-500/10'
-                        : isDark
-                          ? 'bg-[#0B0F17] border-[#30363D] text-[#E5E7EB] focus:border-emerald-500'
-                          : 'bg-white border-[#E2E8F0] text-[#0F172A] focus:border-emerald-500'
+                        : 'border-[var(--border)] bg-[var(--surface-secondary)] text-[var(--text-primary)] focus:border-[var(--accent)]'
                     }`}
                   />
                   {fieldErrors.message && (
@@ -502,12 +417,11 @@ export default function Contact() {
                   )}
                 </div>
 
-                {/* Form Action */}
                 <div className="pt-2 flex justify-end">
-                  <button
+                  <MagneticButton
                     type="submit"
                     disabled={isSubmitting}
-                    className="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 disabled:bg-emerald-800 text-white font-medium text-xs flex items-center gap-2 shadow-sm transition-all duration-200 cursor-pointer disabled:cursor-not-allowed"
+                    className="px-6 py-2.5 rounded-xl bg-[var(--accent)] hover:bg-[var(--accent-hover)] disabled:opacity-60 text-[var(--background)] font-medium text-xs flex items-center gap-2 shadow-sm transition-all duration-200 cursor-pointer disabled:cursor-not-allowed"
                   >
                     {isSubmitting ? (
                       <>
@@ -520,7 +434,7 @@ export default function Contact() {
                         <span>Send Message</span>
                       </>
                     )}
-                  </button>
+                  </MagneticButton>
                 </div>
               </form>
 

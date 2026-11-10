@@ -51,6 +51,6 @@ const getTransporter = () => {
 module.exports = {
   isMailerConfigured,
   getTransporter,
-  receiverEmail: process.env.CONTACT_RECEIVER_EMAIL || 'rajbalajiyagateela@gmail.com',
+  receiverEmail: process.env.CONTACT_RECEIVER_EMAIL || 'yagateelabalaji@gmail.com',
 };
 

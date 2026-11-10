@@ -1,11 +1,9 @@
 import React from 'react';
-import { Github, Linkedin, Mail, ArrowUp, Terminal } from 'lucide-react';
+import { Github, Linkedin, Mail, ArrowUp } from 'lucide-react';
 import { personalDetails } from '../data/portfolioData';
-import { useTheme } from '../context/ThemeContext';
+import MagneticButton from './MagneticButton';
 
 export default function Footer() {
-  const { isDark } = useTheme();
-
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -14,8 +12,9 @@ export default function Footer() {
     { name: 'Home', href: '#home' },
     { name: 'About', href: '#about' },
     { name: 'Skills', href: '#skills' },
-    { name: 'Projects', href: '#projects' },
     { name: 'Experience', href: '#experience' },
+    { name: 'Projects', href: '#projects' },
+    { name: 'Education', href: '#education' },
     { name: 'Contact', href: '#contact' },
   ];
 
@@ -31,45 +30,28 @@ export default function Footer() {
   };
 
   return (
-    <footer className={`border-t transition-colors py-12 ${
-      isDark 
-        ? 'bg-[#0B0F17] border-[#30363D]/60 text-[#94A3B8]' 
-        : 'bg-[#F3F4F6] border-[#E2E8F0] text-[#475569]'
-    }`}>
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className={`grid grid-cols-1 md:grid-cols-12 gap-8 pb-8 border-b ${
-          isDark ? 'border-[#30363D]/60' : 'border-[#E2E8F0]'
-        }`}>
+    <footer className="border-t border-[var(--border)] py-14 bg-[var(--background)] text-[var(--text-secondary)]">
+      <div className="bs-container">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-10 border-b border-[var(--border)]">
           
           {/* Identity Column */}
-          <div className="md:col-span-6 space-y-2.5">
-            <div className="flex items-center gap-2">
-              <div className={`w-7 h-7 rounded-lg flex items-center justify-center border ${
-                isDark 
-                  ? 'bg-[#161B22] border-[#30363D] text-emerald-400' 
-                  : 'bg-white border-[#E2E8F0] text-emerald-600 shadow-sm'
-              }`}>
-                <Terminal className="w-3.5 h-3.5" />
-              </div>
-              <span className={`font-semibold tracking-tight text-base ${
-                isDark ? 'text-[#E5E7EB]' : 'text-[#0F172A]'
-              }`}>
+          <div className="md:col-span-6 space-y-3">
+            <div className="flex items-center gap-2.5">
+              <span className="font-heading font-bold text-lg text-[var(--text-primary)]">
                 {personalDetails.name}
               </span>
-              <span className={`text-xs px-2 py-0.5 rounded font-mono ${
-                isDark ? 'bg-emerald-500/10 text-emerald-400' : 'bg-emerald-50 text-emerald-700'
-              }`}>
-                Python Backend Developer
+              <span className="text-xs font-mono px-2 py-0.5 rounded bg-[var(--accent-subtle)] text-[var(--accent)] border border-[var(--accent)]/30 font-medium">
+                {personalDetails.role}
               </span>
             </div>
-            <p className="text-xs leading-relaxed max-w-sm">
-              Focused on scalable REST APIs, event-driven architectures using Kafka, and reliable PostgreSQL data persistence.
+            <p className="text-xs text-[var(--text-secondary)] leading-relaxed max-w-sm">
+              Building reliable backend applications and practical web solutions using Python, FastAPI, databases, and modern web technologies.
             </p>
           </div>
 
           {/* Quick Navigation Links */}
           <div className="md:col-span-3 space-y-2">
-            <span className="text-xs font-mono uppercase tracking-wider font-semibold text-slate-400 block mb-2">
+            <span className="text-xs font-mono uppercase tracking-wider font-semibold text-[var(--text-muted)] block mb-2.5">
               Navigation
             </span>
             <div className="grid grid-cols-2 gap-2 text-xs font-mono">
@@ -78,7 +60,7 @@ export default function Footer() {
                   key={link.name}
                   href={link.href}
                   onClick={(e) => handleNavClick(e, link.href)}
-                  className="hover:text-emerald-500 transition-colors"
+                  className="hover:text-[var(--accent)] transition-colors"
                 >
                   {link.name}
                 </a>
@@ -88,68 +70,56 @@ export default function Footer() {
 
           {/* Social Links & Back to Top */}
           <div className="md:col-span-3 space-y-2 md:text-right">
-            <span className="text-xs font-mono uppercase tracking-wider font-semibold text-slate-400 block mb-2">
+            <span className="text-xs font-mono uppercase tracking-wider font-semibold text-[var(--text-muted)] block mb-2.5">
               Connect
             </span>
             <div className="flex items-center md:justify-end gap-2">
-              <a
+              <MagneticButton
                 href={personalDetails.github}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="GitHub Profile"
-                className={`w-8 h-8 rounded-lg border flex items-center justify-center transition-colors ${
-                  isDark 
-                    ? 'bg-[#161B22] border-[#30363D] text-[#94A3B8] hover:text-[#E5E7EB] hover:border-emerald-500/50' 
-                    : 'bg-white border-[#E2E8F0] text-[#475569] hover:text-[#0F172A] shadow-sm hover:border-emerald-400'
-                }`}
+                className="social-icon-btn w-9 h-9 rounded-lg border border-[var(--border)] bg-[var(--surface)] text-[var(--text-secondary)] hover:text-[var(--accent)] hover:border-[var(--accent)] transition-colors cursor-pointer"
               >
                 <Github className="w-4 h-4" />
-              </a>
+              </MagneticButton>
 
-              <a
+              <MagneticButton
                 href={personalDetails.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn Profile"
-                className={`w-8 h-8 rounded-lg border flex items-center justify-center transition-colors ${
-                  isDark 
-                    ? 'bg-[#161B22] border-[#30363D] text-[#94A3B8] hover:text-[#E5E7EB] hover:border-emerald-500/50' 
-                    : 'bg-white border-[#E2E8F0] text-[#475569] hover:text-[#0F172A] shadow-sm hover:border-emerald-400'
-                }`}
+                className="social-icon-btn w-9 h-9 rounded-lg border border-[var(--border)] bg-[var(--surface)] text-[var(--text-secondary)] hover:text-[var(--accent)] hover:border-[var(--accent)] transition-colors cursor-pointer"
               >
-                <Linkedin className="w-4 h-4" />
-              </a>
+                <Linkedin className="w-4 h-4 text-[var(--accent)]" />
+              </MagneticButton>
 
-              <a
+              <MagneticButton
                 href={`mailto:${personalDetails.email}`}
                 aria-label="Direct Email"
-                className={`w-8 h-8 rounded-lg border flex items-center justify-center transition-colors ${
-                  isDark 
-                    ? 'bg-[#161B22] border-[#30363D] text-[#94A3B8] hover:text-[#E5E7EB] hover:border-emerald-500/50' 
-                    : 'bg-white border-[#E2E8F0] text-[#475569] hover:text-[#0F172A] shadow-sm hover:border-emerald-400'
-                }`}
+                className="social-icon-btn w-9 h-9 rounded-lg border border-[var(--border)] bg-[var(--surface)] text-[var(--text-secondary)] hover:text-[var(--accent)] hover:border-[var(--accent)] transition-colors cursor-pointer"
               >
                 <Mail className="w-4 h-4" />
-              </a>
+              </MagneticButton>
 
-              <button
+              <MagneticButton
                 onClick={scrollToTop}
-                aria-label="Back to top"
-                className="w-8 h-8 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white flex items-center justify-center transition-colors shadow-sm cursor-pointer ml-1"
-                title="Scroll to top"
+                aria-label="Scroll to top"
+                className="w-9 h-9 rounded-lg bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-[var(--background)] flex items-center justify-center transition-colors shadow-sm cursor-pointer ml-1"
+                title="Back to top"
               >
                 <ArrowUp className="w-4 h-4" />
-              </button>
+              </MagneticButton>
             </div>
           </div>
 
         </div>
 
-        {/* Bottom Bar */}
-        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-2">
+        {/* Footer Bottom Bar */}
+        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-[var(--text-muted)] gap-3 font-mono">
           <p>© {new Date().getFullYear()} {personalDetails.fullName}. All rights reserved.</p>
-          <div className="text-[11px] font-mono text-slate-400">
-            Python & FastAPI Backend Portfolio
+          <div className="text-[11px]">
+            Python Backend Developer Portfolio
           </div>
         </div>
 

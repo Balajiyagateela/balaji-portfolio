@@ -13,7 +13,7 @@ const handleContactSubmit = async (req, res) => {
       success: false,
       code: 'SMTP_NOT_CONFIGURED',
       error: 'SMTP mail service is not configured on this server environment.',
-      message: 'SMTP credentials are not configured in the server environment variables. Please reach out directly to Balaji Yagateela at rajbalajiyagateela@gmail.com.',
+      message: 'SMTP credentials are not configured in the server environment variables. Please reach out directly to Balaji Yagateela at yagateelabalaji@gmail.com.',
       directEmail: receiverEmail,
       submission: {
         name,

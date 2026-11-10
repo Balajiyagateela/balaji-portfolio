@@ -1,3 +1,5 @@
+@import './styles/variables.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -7,22 +9,32 @@
     scroll-behavior: smooth;
   }
   
-  /* Dark mode */
-  html.dark {
-    color-scheme: dark;
-    background-color: #0B0F17;
-    color: #E5E7EB;
+  body {
+    background-color: var(--background);
+    color: var(--text-primary);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    overflow-x: hidden;
   }
 
-  /* Light mode: crisp light-gray canvas so pure white cards stand out clearly */
-  html:not(.dark) {
-    color-scheme: light;
-    background-color: #F3F4F6;
-    color: #0F172A;
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    letter-spacing: -0.025em;
   }
 }
 
-/* Reduced motion preference */
+/* Hide default cursor on desktop when custom cursor is enabled */
+@media (hover: hover) and (pointer: fine) {
+  body.custom-cursor-enabled,
+  body.custom-cursor-enabled a,
+  body.custom-cursor-enabled button,
+  body.custom-cursor-enabled input,
+  body.custom-cursor-enabled textarea {
+    cursor: none !important;
+  }
+}
+
+/* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -35,60 +47,70 @@
   }
 }
 
-/* Custom modern scrollbars */
-html.dark ::-webkit-scrollbar {
+/* Refined custom scrollbar */
+::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
-html.dark ::-webkit-scrollbar-track {
-  background: #0B0F17;
+::-webkit-scrollbar-track {
+  background: var(--background);
 }
-html.dark ::-webkit-scrollbar-thumb {
-  background: #30363D;
+::-webkit-scrollbar-thumb {
+  background: rgba(197, 164, 109, 0.3);
   border-radius: 9999px;
 }
-html.dark ::-webkit-scrollbar-thumb:hover {
-  background: #10B981;
-}
-
-html:not(.dark) ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-html:not(.dark) ::-webkit-scrollbar-track {
-  background: #F3F4F6;
-}
-html:not(.dark) ::-webkit-scrollbar-thumb {
-  background: #CBD5E1;
-  border-radius: 9999px;
-}
-html:not(.dark) ::-webkit-scrollbar-thumb:hover {
-  background: #10B981;
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
 }
 
 /* Subtle architectural grid pattern */
-.bg-grid-subtle-dark {
-  background-size: 32px 32px;
+.bg-grid-minimal {
+  background-size: 40px 40px;
   background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    linear-gradient(to right, var(--border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border) 1px, transparent 1px);
 }
 
-.bg-grid-subtle-light {
-  background-size: 32px 32px;
-  background-image: 
-    linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+/* Subtle radial glow */
+.ambient-glow {
+  background: radial-gradient(circle at 50% 0%, var(--accent-subtle) 0%, transparent 65%);
 }
 
-/* Restrained accent spot */
-.spot-emerald {
-  background: radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.08) 0%, transparent 60%);
+/* Card base class */
+.premium-card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--card-shadow);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Card base styles */
-.portfolio-card {
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+.premium-card:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-3px);
+}
+
+/* Bootstrap-compatible responsive grid helpers */
+.bs-container {
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .bs-container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .bs-container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
 }
