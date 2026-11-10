@@ -1,11 +1,25 @@
 import React, { useState } from 'react';
-import { Mail, Send, Github, Linkedin, MapPin, Phone, Copy, Check, AlertTriangle, CheckCircle2, Terminal, ExternalLink, ShieldAlert, Loader2 } from 'lucide-react';
+import { Mail, Send, Github, Linkedin, MapPin, Copy, Check, CheckCircle2, Terminal, ExternalLink, Loader2, MessageSquare } from 'lucide-react';
 import { motion } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import { personalDetails } from '../data/portfolioData';
 import { sendContactMessage } from '../services/api';
 import MagneticButton from '../components/MagneticButton';
 import Toast from '../components/Toast';
+
+// Recognizable official WhatsApp SVG icon
+function WhatsAppIcon({ className = "w-4 h-4" }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
+    </svg>
+  );
+}
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -87,40 +101,32 @@ export default function Contact() {
 
         setStatusFeedback({
           type: 'success',
-          message: result.message || 'Your message has been sent successfully!',
+          message: result.message || 'Thank you for reaching out! Your message has been sent successfully.',
         });
         setToast({
           type: 'success',
           message: 'Message delivered! Thank you for getting in touch.',
         });
         setFormData({ name: '', email: '', subject: '', message: '' });
-      } else if (result.code === 'SMTP_NOT_CONFIGURED') {
-        setStatusFeedback({
-          type: 'unconfigured',
-          message: result.message || 'SMTP service is currently not configured on this server environment.',
-          directEmail: result.directEmail || personalDetails.email,
-        });
-        setToast({
-          type: 'warning',
-          message: 'Server mail is unconfigured. Direct email link is ready below.',
-        });
       } else if (result.errors) {
         setFieldErrors(result.errors);
         setStatusFeedback({
-          type: 'error',
-          message: result.error || 'Validation failed. Please correct the highlighted errors.',
+          type: 'validation',
+          message: 'Please correct the highlighted form errors.',
         });
       } else {
+        // User-friendly fallback message (never exposes internal SMTP details)
         setStatusFeedback({
-          type: 'error',
-          message: result.error || 'Failed to submit message. Please try emailing directly.',
+          type: 'fallback',
+          message: result.message || 'Thank you for reaching out. The contact form is temporarily unavailable. Please contact me directly using the email address below.',
           directEmail: result.directEmail || personalDetails.email,
         });
       }
     } catch (err) {
+      // Graceful fallback on any unexpected client/network error
       setStatusFeedback({
-        type: 'error',
-        message: 'An unexpected connection error occurred. Please email directly.',
+        type: 'fallback',
+        message: 'Thank you for reaching out. The contact form is temporarily unavailable. Please contact me directly using the email address below.',
         directEmail: personalDetails.email,
       });
     } finally {
@@ -145,19 +151,19 @@ export default function Contact() {
         <div className="max-w-2xl mb-12">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium mb-3 border border-[var(--border)] bg-[var(--surface)] text-[var(--accent)] shadow-sm">
             <Terminal className="w-3.5 h-3.5" />
-            <span>06 // CONTACT</span>
+            <span>05 // CONTACT</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-heading font-bold tracking-tight text-[var(--text-primary)]">
             Get in Touch
           </h2>
           <p className="mt-2 text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed">
-            Interested in working together or discussing backend architecture and opportunities? Feel free to reach out.
+            Interested in discussing backend architecture, API engineering, or technical opportunities? Feel free to reach out directly through any of the channels below.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
-          {/* Left Column: Contact Channels & Profiles */}
+          {/* Left Column: 3 Clear Contact Methods (Email, WhatsApp, Profiles) */}
           <motion.div
             initial={{ opacity: 0, x: -16 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -165,65 +171,79 @@ export default function Contact() {
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-5 space-y-6"
           >
-            {/* Direct Details Card */}
+            {/* Direct Channels Card */}
             <div className="p-6 rounded-2xl border border-[var(--border)] bg-[var(--surface)] space-y-4">
               <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-muted)] font-semibold block">
-                Direct Channels
+                Direct Contact Methods
               </span>
 
-              {/* Email */}
-              <div className="flex items-center justify-between gap-3 p-3 rounded-xl border border-[var(--border)] bg-[var(--surface-secondary)]">
-                <div className="flex items-center gap-2.5 overflow-hidden">
-                  <Mail className="w-4 h-4 text-[var(--accent)] shrink-0" />
-                  <a
-                    href={`mailto:${personalDetails.email}`}
-                    className="text-xs sm:text-sm font-mono truncate text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors"
+              {/* Method 1: Email */}
+              <div className="p-3.5 rounded-xl border border-[var(--border)] bg-[var(--surface-secondary)] space-y-2">
+                <div className="flex items-center justify-between text-xs font-mono text-[var(--text-muted)]">
+                  <span className="flex items-center gap-1.5 font-semibold text-[var(--accent)]">
+                    <Mail className="w-3.5 h-3.5" />
+                    <span>01 // Direct Email</span>
+                  </span>
+                  <button
+                    onClick={copyEmailAddress}
+                    className="p-1 rounded text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors cursor-pointer"
+                    title="Copy email address"
+                    aria-label="Copy email"
                   >
-                    {personalDetails.email}
-                  </a>
+                    {copiedEmail ? <Check className="w-3.5 h-3.5 text-[var(--accent)]" /> : <Copy className="w-3.5 h-3.5" />}
+                  </button>
                 </div>
-                <button
-                  onClick={copyEmailAddress}
-                  className="p-1.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors shrink-0 cursor-pointer"
-                  title="Copy email address"
-                  aria-label="Copy email"
+                <a
+                  href={`mailto:${personalDetails.email}`}
+                  className="block text-sm font-mono truncate text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors font-medium"
                 >
-                  {copiedEmail ? <Check className="w-4 h-4 text-[var(--accent)]" /> : <Copy className="w-4 h-4" />}
-                </button>
+                  {personalDetails.email}
+                </a>
               </div>
 
-              {/* Phone */}
-              <div className="flex items-center justify-between gap-3 p-3 rounded-xl border border-[var(--border)] bg-[var(--surface-secondary)]">
-                <div className="flex items-center gap-2.5">
-                  <Phone className="w-4 h-4 text-[var(--accent)] shrink-0" />
-                  <a
-                    href={`tel:${personalDetails.phone.replace(/\s+/g, '')}`}
-                    className="text-xs sm:text-sm font-mono text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors"
+              {/* Method 2: WhatsApp */}
+              <div className="p-3.5 rounded-xl border border-[var(--border)] bg-[var(--surface-secondary)] space-y-2">
+                <div className="flex items-center justify-between text-xs font-mono text-[var(--text-muted)]">
+                  <span className="flex items-center gap-1.5 font-semibold text-[#25D366]">
+                    <WhatsAppIcon className="w-3.5 h-3.5" />
+                    <span>02 // WhatsApp</span>
+                  </span>
+                  <button
+                    onClick={copyPhoneNumber}
+                    className="p-1 rounded text-[var(--text-muted)] hover:text-[#25D366] transition-colors cursor-pointer"
+                    title="Copy phone number"
+                    aria-label="Copy phone"
                   >
+                    {copiedPhone ? <Check className="w-3.5 h-3.5 text-[#25D366]" /> : <Copy className="w-3.5 h-3.5" />}
+                  </button>
+                </div>
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-sm font-mono text-[var(--text-primary)] font-medium">
                     {personalDetails.phone}
+                  </span>
+                  <a
+                    href={personalDetails.whatsappUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#25D366]/15 hover:bg-[#25D366]/25 border border-[#25D366]/30 text-[#25D366] text-xs font-mono font-medium transition-colors"
+                  >
+                    <WhatsAppIcon className="w-3.5 h-3.5" />
+                    <span>Chat on WhatsApp</span>
                   </a>
                 </div>
-                <button
-                  onClick={copyPhoneNumber}
-                  className="p-1.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors shrink-0 cursor-pointer"
-                  title="Copy phone number"
-                  aria-label="Copy phone"
-                >
-                  {copiedPhone ? <Check className="w-4 h-4 text-[var(--accent)]" /> : <Copy className="w-4 h-4" />}
-                </button>
               </div>
 
-              {/* Location */}
-              <div className="flex items-center gap-2 text-xs font-mono text-[var(--text-secondary)] pt-1">
+              {/* Location Indicator */}
+              <div className="flex items-center gap-2 text-xs font-mono text-[var(--text-secondary)] pt-1 px-1">
                 <MapPin className="w-3.5 h-3.5 text-[var(--accent)] shrink-0" />
                 <span>{personalDetails.location}</span>
               </div>
             </div>
 
-            {/* Online Profiles */}
+            {/* Method 3: Online Profiles (GitHub & LinkedIn) */}
             <div className="p-6 rounded-2xl border border-[var(--border)] bg-[var(--surface)] space-y-3">
               <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-muted)] font-semibold block">
-                Profiles
+                03 // Professional Profiles
               </span>
 
               <a
@@ -255,7 +275,7 @@ export default function Contact() {
 
           </motion.div>
 
-          {/* Right Column: Contact Form */}
+          {/* Right Column: Contact Message Inquiry Form */}
           <motion.div
             initial={{ opacity: 0, x: 16 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -270,7 +290,7 @@ export default function Contact() {
                     Send a Message
                   </h3>
                   <p className="text-xs text-[var(--text-secondary)] mt-0.5">
-                    Leave your contact details and I'll get back to you.
+                    Leave your contact details and message, and I'll get back to you promptly.
                   </p>
                 </div>
                 <div className="w-9 h-9 rounded-lg flex items-center justify-center border border-[var(--accent)]/30 bg-[var(--accent-subtle)] text-[var(--accent)]">
@@ -278,7 +298,7 @@ export default function Contact() {
                 </div>
               </div>
 
-              {/* Status Feedback */}
+              {/* Status Feedback: Professional & Graceful (Never exposes internal server errors) */}
               {statusFeedback && (
                 <div className="mb-5">
                   {statusFeedback.type === 'success' && (
@@ -291,39 +311,41 @@ export default function Contact() {
                     </div>
                   )}
 
-                  {statusFeedback.type === 'unconfigured' && (
-                    <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs space-y-2">
-                      <div className="flex items-start gap-2.5">
-                        <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
+                  {statusFeedback.type === 'fallback' && (
+                    <div className="p-4 rounded-xl bg-[var(--surface-secondary)] border border-[var(--border)] text-xs space-y-3">
+                      <div className="flex items-start gap-2.5 text-[var(--text-secondary)]">
+                        <Mail className="w-4 h-4 text-[var(--accent)] shrink-0 mt-0.5" />
                         <div>
-                          <strong className="block font-semibold mb-0.5">Notice:</strong>
-                          {statusFeedback.message}
+                          <p className="text-[var(--text-primary)] font-medium leading-relaxed">
+                            {statusFeedback.message}
+                          </p>
                         </div>
                       </div>
-                      <div className="pt-2">
+                      <div className="pt-1 flex flex-wrap gap-2.5">
                         <a
                           href={mailtoLink}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-[var(--background)] font-semibold text-xs transition-colors"
+                          className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-[#0B0F17] font-semibold text-xs transition-colors"
                         >
                           <Mail className="w-3.5 h-3.5" />
-                          <span>Open in Email Client</span>
+                          <span>Open in Email Client ({personalDetails.email})</span>
+                        </a>
+                        <a
+                          href={personalDetails.whatsappUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-[#25D366]/40 bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366]/20 font-semibold text-xs transition-colors"
+                        >
+                          <WhatsAppIcon className="w-3.5 h-3.5" />
+                          <span>Connect on WhatsApp</span>
                         </a>
                       </div>
                     </div>
                   )}
 
-                  {statusFeedback.type === 'error' && (
-                    <div className="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs flex items-start gap-2.5">
-                      <ShieldAlert className="w-4 h-4 shrink-0 mt-0.5" />
-                      <div>
-                        <strong className="block font-semibold mb-0.5">Delivery Notice:</strong>
-                        {statusFeedback.message}
-                        <div className="mt-1.5">
-                          <a href={mailtoLink} className="text-[var(--accent)] underline font-mono text-xs">
-                            Send directly via email client →
-                          </a>
-                        </div>
-                      </div>
+                  {statusFeedback.type === 'validation' && (
+                    <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs flex items-center gap-2">
+                      <MessageSquare className="w-4 h-4 shrink-0" />
+                      <span>{statusFeedback.message}</span>
                     </div>
                   )}
                 </div>
@@ -355,14 +377,14 @@ export default function Contact() {
 
                   <div className="space-y-1">
                     <label className="block text-xs font-mono font-medium text-[var(--text-primary)]">
-                      Email <span className="text-[var(--accent)]">*</span>
+                      Email Address <span className="text-[var(--accent)]">*</span>
                     </label>
                     <input
                       type="email"
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      placeholder="alex@company.com"
+                      placeholder="alex@example.com"
                       className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none transition-colors ${
                         fieldErrors.email
                           ? 'border-rose-500 bg-rose-500/10'
@@ -384,7 +406,7 @@ export default function Contact() {
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
-                    placeholder="Python Backend Role / Collaboration"
+                    placeholder="Backend Architecture Discussion / Role Opportunity"
                     className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none transition-colors ${
                       fieldErrors.subject
                         ? 'border-rose-500 bg-rose-500/10'
@@ -405,7 +427,7 @@ export default function Contact() {
                     rows={4}
                     value={formData.message}
                     onChange={handleChange}
-                    placeholder="Describe your inquiry, role requirements, or project..."
+                    placeholder="Describe your inquiry, project scope, or opportunity details..."
                     className={`w-full px-3.5 py-2.5 rounded-xl border text-xs focus:outline-none transition-colors resize-y ${
                       fieldErrors.message
                         ? 'border-rose-500 bg-rose-500/10'
@@ -421,7 +443,7 @@ export default function Contact() {
                   <MagneticButton
                     type="submit"
                     disabled={isSubmitting}
-                    className="px-6 py-2.5 rounded-xl bg-[var(--accent)] hover:bg-[var(--accent-hover)] disabled:opacity-60 text-[var(--background)] font-medium text-xs flex items-center gap-2 shadow-sm transition-all duration-200 cursor-pointer disabled:cursor-not-allowed"
+                    className="px-6 py-2.5 rounded-xl bg-[var(--accent)] hover:bg-[var(--accent-hover)] disabled:opacity-60 text-[#0B0F17] font-semibold text-xs flex items-center gap-2 shadow-sm transition-all duration-200 cursor-pointer disabled:cursor-not-allowed"
                   >
                     {isSubmitting ? (
                       <>
@@ -444,6 +466,18 @@ export default function Contact() {
         </div>
 
       </div>
+
+      {/* Floating Unobtrusive WhatsApp Button in Bottom-Right Corner */}
+      <a
+        href={personalDetails.whatsappUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Chat with me on WhatsApp"
+        title="Chat with me on WhatsApp"
+        className="fixed bottom-6 right-6 z-40 w-12 h-12 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-lg shadow-black/40 hover:scale-110 active:scale-95 transition-transform duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#25D366] focus:ring-offset-2 focus:ring-offset-[var(--background)]"
+      >
+        <WhatsAppIcon className="w-6 h-6 fill-white" />
+      </a>
 
       {toast && (
         <Toast

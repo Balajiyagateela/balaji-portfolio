@@ -12,7 +12,7 @@ const apiClient = axios.create({
 });
 
 /**
- * Check backend health & mailer availability
+ * Check backend health & availability
  */
 export const getHealthStatus = async () => {
   try {
@@ -21,8 +21,7 @@ export const getHealthStatus = async () => {
   } catch (error) {
     return {
       success: false,
-      error: error.response?.data?.error || 'Unable to connect to backend server.',
-      details: error.message,
+      error: 'Backend service offline.',
     };
   }
 };
@@ -36,36 +35,38 @@ export const sendContactMessage = async (formData) => {
     const response = await apiClient.post('/contact', formData);
     return {
       success: true,
-      message: response.data.message || 'Message sent successfully!',
+      message: response.data.message || 'Thank you for reaching out! Your message has been sent successfully.',
       data: response.data,
     };
   } catch (error) {
     if (error.response) {
-      // Server returned structured error (e.g., 400 validation, 503 missing SMTP, 429 rate limit)
+      // Server returned structured error (e.g. 400 validation, 503 unavailable, 429 rate limit)
       return {
         success: false,
         status: error.response.status,
-        code: error.response.data?.code,
-        error: error.response.data?.error || 'Server error occurred.',
-        message: error.response.data?.message,
+        code: error.response.data?.code || 'SERVICE_ERROR',
+        error: error.response.data?.error || 'Unable to process request.',
+        message: error.response.data?.message || 'Thank you for reaching out. The contact form is temporarily unavailable. Please contact me directly using the email address below.',
         errors: error.response.data?.errors,
         directEmail: error.response.data?.directEmail || 'yagateelabalaji@gmail.com',
       };
     } else if (error.request) {
-      // Network error (server offline / unreachable)
+      // Server unreachable / network offline
       return {
         success: false,
         status: 0,
-        code: 'NETWORK_ERROR',
-        error: 'Unable to reach backend API. The backend server might be offline or undergoing deployment.',
+        code: 'SERVICE_UNAVAILABLE',
+        error: 'Unable to connect to server.',
+        message: 'Thank you for reaching out. The contact form is temporarily unavailable. Please contact me directly using the email address below.',
         directEmail: 'yagateelabalaji@gmail.com',
       };
     } else {
       return {
         success: false,
         status: 500,
-        code: 'CLIENT_ERROR',
-        error: error.message,
+        code: 'SERVICE_UNAVAILABLE',
+        error: 'Client request failure.',
+        message: 'Thank you for reaching out. The contact form is temporarily unavailable. Please contact me directly using the email address below.',
         directEmail: 'yagateelabalaji@gmail.com',
       };
     }
@@ -73,4 +74,3 @@ export const sendContactMessage = async (formData) => {
 };
 
 export default apiClient;
-

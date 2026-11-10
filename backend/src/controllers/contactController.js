@@ -9,17 +9,15 @@ const handleContactSubmit = async (req, res) => {
 
   // 1. Check if SMTP configuration is available
   if (!isMailerConfigured()) {
+    // Log server-side warning without leaking credentials
+    console.warn('[Contact Service] SMTP credentials not configured in server environment. Rejecting mail dispatch.');
+    
     return res.status(503).json({
       success: false,
-      code: 'SMTP_NOT_CONFIGURED',
-      error: 'SMTP mail service is not configured on this server environment.',
-      message: 'SMTP credentials are not configured in the server environment variables. Please reach out directly to Balaji Yagateela at yagateelabalaji@gmail.com.',
+      code: 'SERVICE_UNAVAILABLE',
+      error: 'Contact service is temporarily unavailable.',
+      message: 'Thank you for reaching out. The contact form is temporarily unavailable. Please contact me directly using the email address below.',
       directEmail: receiverEmail,
-      submission: {
-        name,
-        email,
-        subject,
-      },
     });
   }
 
@@ -40,7 +38,7 @@ const handleContactSubmit = async (req, res) => {
             `---\nTimestamp: ${new Date().toISOString()}\nSender IP: ${req.ip}`,
       html: `
         <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #e2e8f0; border-radius: 8px; background-color: #ffffff; color: #1e293b;">
-          <h2 style="color: #0f172a; margin-top: 0; border-bottom: 2px solid #3b82f6; padding-bottom: 12px;">New Portfolio Contact Message</h2>
+          <h2 style="color: #0f172a; margin-top: 0; border-bottom: 2px solid #10b981; padding-bottom: 12px;">New Portfolio Contact Message</h2>
           <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
             <tr>
               <td style="padding: 8px 0; font-weight: 600; width: 120px; color: #64748b;">Sender:</td>
@@ -48,7 +46,7 @@ const handleContactSubmit = async (req, res) => {
             </tr>
             <tr>
               <td style="padding: 8px 0; font-weight: 600; color: #64748b;">Email:</td>
-              <td style="padding: 8px 0; color: #2563eb;"><a href="mailto:${email}" style="color: #2563eb; text-decoration: none;">${email}</a></td>
+              <td style="padding: 8px 0; color: #10b981;"><a href="mailto:${email}" style="color: #10b981; text-decoration: none;">${email}</a></td>
             </tr>
             <tr>
               <td style="padding: 8px 0; font-weight: 600; color: #64748b;">Subject:</td>
@@ -59,7 +57,7 @@ const handleContactSubmit = async (req, res) => {
               <td style="padding: 8px 0; color: #64748b;">${new Date().toUTCString()}</td>
             </tr>
           </table>
-          <div style="background-color: #f8fafc; border-left: 4px solid #3b82f6; padding: 16px; border-radius: 4px; margin-top: 12px;">
+          <div style="background-color: #f8fafc; border-left: 4px solid #10b981; padding: 16px; border-radius: 4px; margin-top: 12px;">
             <p style="margin: 0; white-space: pre-wrap; line-height: 1.6; color: #334155;">${message.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>
           </div>
           <p style="margin-top: 24px; font-size: 12px; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 12px;">
@@ -77,12 +75,14 @@ const handleContactSubmit = async (req, res) => {
       messageId: info.messageId,
     });
   } catch (error) {
-    console.error('Error sending contact email via SMTP:', error);
+    // Log error message server-side only without credentials
+    console.error('[Contact Service] SMTP relay dispatch error:', error.message);
+    
     return res.status(502).json({
       success: false,
-      code: 'SMTP_SEND_FAILED',
-      error: 'Failed to deliver message through SMTP relay.',
-      message: `There was a temporary problem delivering your message. Please reach out directly to Balaji Yagateela at ${receiverEmail}.`,
+      code: 'SERVICE_UNAVAILABLE',
+      error: 'Message delivery temporarily unavailable.',
+      message: 'Thank you for reaching out. The contact form is temporarily unavailable. Please contact me directly using the email address below.',
       directEmail: receiverEmail,
     });
   }
@@ -91,4 +91,3 @@ const handleContactSubmit = async (req, res) => {
 module.exports = {
   handleContactSubmit,
 };
-
