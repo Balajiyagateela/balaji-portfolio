@@ -1,6 +1,5 @@
 import React from 'react';
 import { ThemeProvider } from './context/ThemeContext';
-import CustomCursor from './components/CustomCursor';
 import Navbar from './components/Navbar';
 import Hero from './sections/Hero';
 import About from './sections/About';
@@ -15,9 +14,6 @@ export default function App() {
   return (
     <ThemeProvider>
       <div className="min-h-screen selection:bg-[var(--accent)] selection:text-[var(--background)]">
-        {/* Custom Interactive Cursor (fine-pointer desktop only) */}
-        <CustomCursor />
-
         {/* Sticky Navigation (7 sections) */}
         <Navbar />
 

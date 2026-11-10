@@ -1,13 +1,14 @@
 import React from 'react';
-import { Terminal, Code2, Server, Database, Layout, Wrench } from 'lucide-react';
+import { Terminal, Server, Database, Cpu, ShieldCheck, Layout, Wrench } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { skillsCategories } from '../data/portfolioData';
 
 const categoryIcons = {
-  "Programming Languages": Code2,
-  "Backend Development": Server,
-  "Databases": Database,
-  "Frontend Development": Layout,
+  "Backend": Server,
+  "Database and ORM": Database,
+  "Event-Driven and Infrastructure": Cpu,
+  "Validation and Data": ShieldCheck,
+  "Frontend": Layout,
   "Tools": Wrench,
 };
 
@@ -29,15 +30,15 @@ export default function Skills() {
             Technical Stack & Tooling
           </h2>
           <p className="mt-2 text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed">
-            Technologies and developer tools applied in building resilient backend microservices, REST APIs, and full-stack solutions.
+            Technologies and developer tooling utilized in engineering reliable backend services, database architectures, and full-stack solutions.
           </p>
         </div>
 
-        {/* Categories Grid */}
+        {/* Categories Grid (6 clean cards) */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {skillsCategories.map((group, index) => {
             const Icon = categoryIcons[group.category] || Terminal;
-            const isBackend = group.category === "Backend Development";
+            const isBackend = group.category === "Backend";
 
             return (
               <motion.div
@@ -70,7 +71,7 @@ export default function Skills() {
 
                     {isBackend && (
                       <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[var(--accent-subtle)] text-[var(--accent)] border border-[var(--accent)]/30 font-semibold">
-                        Primary
+                        Primary Focus
                       </span>
                     )}
                   </div>
