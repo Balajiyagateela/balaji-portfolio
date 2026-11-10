@@ -34,4 +34,6 @@ frontend/dist-ssr/
 out.log
 err.log
 *.log
+backend/data/*.json
+!backend/data/.gitkeep
 

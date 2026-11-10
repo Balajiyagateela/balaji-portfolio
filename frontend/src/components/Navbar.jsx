@@ -60,10 +60,8 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? 'bg-[var(--background)]/90 backdrop-blur-md border-b border-[var(--border)] shadow-sm'
-          : 'bg-transparent border-b border-transparent'
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 bg-[var(--background)]/95 backdrop-blur-md border-b border-[var(--border)] ${
+        scrolled ? 'shadow-sm' : ''
       }`}
     >
       <div className="bs-container">
@@ -76,23 +74,23 @@ export default function Navbar() {
             className="flex items-center gap-3 group focus:outline-none"
             aria-label="Balaji Yagateela - Home"
           >
-            <div className="w-9 h-9 rounded-lg flex items-center justify-center border border-[var(--border)] bg-[var(--surface)] text-[var(--accent)] group-hover:border-[var(--accent)] transition-colors duration-200">
-              <span className="font-heading font-bold text-sm tracking-tight">BY</span>
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center border border-[var(--border)] bg-[var(--surface)] text-[var(--accent)] group-hover:border-[var(--accent)] transition-colors duration-200 shadow-sm shrink-0">
+              <span className="font-heading font-bold text-base tracking-tight">BY</span>
             </div>
             <div>
-              <span className="font-heading font-semibold text-sm sm:text-base tracking-tight text-[var(--text-primary)] block transition-colors group-hover:text-[var(--accent)]">
+              <span className="font-heading font-bold text-base sm:text-lg tracking-tight text-[var(--text-primary)] block transition-colors group-hover:text-[var(--accent)]">
                 {personalDetails.name}
               </span>
-              <span className="text-[11px] font-mono text-[var(--accent)] block -mt-0.5">
+              <span className="text-xs font-mono font-semibold text-[var(--accent)] block -mt-0.5">
                 {personalDetails.role}
               </span>
             </div>
           </a>
 
-          {/* Desktop Navigation (Exact 7 items) */}
+          {/* Desktop Navigation */}
           <nav
             aria-label="Main Navigation"
-            className="hidden md:flex items-center gap-1 px-3 py-1.5 rounded-full border border-[var(--border)] bg-[var(--surface)]/80 backdrop-blur-md"
+            className="hidden md:flex items-center gap-1 px-3.5 py-1.5 rounded-full border border-[var(--border)] bg-[var(--surface)]/90 backdrop-blur-md shadow-sm"
           >
             {navLinks.map((link) => {
               const isActive = activeSection === link.href.substring(1);
@@ -102,9 +100,9 @@ export default function Navbar() {
                   key={link.name}
                   href={link.href}
                   onClick={(e) => handleNavClick(e, link.href)}
-                  className={`relative px-3.5 py-1.5 text-xs font-medium rounded-full transition-all duration-200 ${
+                  className={`relative px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 ${
                     isActive
-                      ? 'text-[var(--background)] bg-[var(--accent)] font-semibold shadow-sm'
+                      ? 'text-[#0B0F17] bg-[var(--accent)] font-semibold shadow-sm'
                       : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]'
                   }`}
                 >
@@ -120,7 +118,7 @@ export default function Navbar() {
               onClick={toggleTheme}
               aria-label="Toggle theme"
               title={isDark ? "Switch to Light Theme" : "Switch to Dark Theme"}
-              className="p-2 rounded-lg border border-[var(--border)] bg-[var(--surface)] text-[var(--text-secondary)] hover:text-[var(--accent)] hover:border-[var(--accent)] transition-colors duration-200 cursor-pointer"
+              className="p-2.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--text-secondary)] hover:text-[var(--accent)] hover:border-[var(--accent)] transition-colors duration-200 cursor-pointer shadow-sm"
             >
               {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-amber-600" />}
             </button>
@@ -129,7 +127,7 @@ export default function Navbar() {
               onClick={() => setIsOpen(!isOpen)}
               aria-label="Open mobile menu"
               aria-expanded={isOpen}
-              className="md:hidden p-2 rounded-lg border border-[var(--border)] bg-[var(--surface)] text-[var(--text-primary)] transition-colors cursor-pointer"
+              className="md:hidden p-2.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--text-primary)] transition-colors cursor-pointer shadow-sm"
             >
               {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -148,7 +146,7 @@ export default function Navbar() {
             transition={{ duration: 0.2 }}
             className="md:hidden border-b border-[var(--border)] bg-[var(--background)]/98 backdrop-blur-xl overflow-hidden"
           >
-            <div className="bs-container py-4 space-y-1">
+            <div className="bs-container py-4 space-y-1.5">
               {navLinks.map((link) => {
                 const isActive = activeSection === link.href.substring(1);
 
@@ -157,7 +155,7 @@ export default function Navbar() {
                     key={link.name}
                     href={link.href}
                     onClick={(e) => handleNavClick(e, link.href)}
-                    className={`block px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                    className={`block px-4 py-3 rounded-xl text-base font-medium transition-colors ${
                       isActive
                         ? 'bg-[var(--accent-subtle)] text-[var(--accent)] font-semibold border border-[var(--accent)]/30'
                         : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface)]'

@@ -1,14 +1,18 @@
 import axios from 'axios';
 
-// Get API base URL from environment or default to localhost:5000/api
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+// Get API base URL from environment; dynamically falls back to deployed Render API in production, localhost in development
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL ||
+  (import.meta.env.PROD
+    ? 'https://balaji-portfolio-lazn.onrender.com/api'
+    : 'http://localhost:5000/api');
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 10000, // 10 second timeout
+  timeout: 15000, // 15 second timeout to allow Render wakeups
 });
 
 /**
@@ -35,38 +39,38 @@ export const sendContactMessage = async (formData) => {
     const response = await apiClient.post('/contact', formData);
     return {
       success: true,
-      message: response.data.message || 'Thank you for reaching out! Your message has been sent successfully.',
+      message: response.data.message || 'Your message was sent successfully.',
       data: response.data,
     };
   } catch (error) {
     if (error.response) {
-      // Server returned structured error (e.g. 400 validation, 503 unavailable, 429 rate limit)
+      // Server returned response (e.g. 400 validation, 502/503 service unavailable, 429 rate limit)
       return {
         success: false,
         status: error.response.status,
         code: error.response.data?.code || 'SERVICE_ERROR',
         error: error.response.data?.error || 'Unable to process request.',
-        message: error.response.data?.message || 'Thank you for reaching out. The contact form is temporarily unavailable. Please contact me directly using the email address below.',
+        message: error.response.data?.message || 'Unable to send your message right now. Please try again later.',
         errors: error.response.data?.errors,
         directEmail: error.response.data?.directEmail || 'yagateelabalaji@gmail.com',
       };
     } else if (error.request) {
-      // Server unreachable / network offline
+      // Network disconnect, CORS block, or backend spun down
       return {
         success: false,
         status: 0,
-        code: 'SERVICE_UNAVAILABLE',
-        error: 'Unable to connect to server.',
-        message: 'Thank you for reaching out. The contact form is temporarily unavailable. Please contact me directly using the email address below.',
+        code: 'NETWORK_ERROR',
+        error: 'Unable to connect to backend.',
+        message: 'Unable to send your message right now. Please try again later.',
         directEmail: 'yagateelabalaji@gmail.com',
       };
     } else {
       return {
         success: false,
         status: 500,
-        code: 'SERVICE_UNAVAILABLE',
-        error: 'Client request failure.',
-        message: 'Thank you for reaching out. The contact form is temporarily unavailable. Please contact me directly using the email address below.',
+        code: 'CLIENT_ERROR',
+        error: error.message,
+        message: 'Unable to send your message right now. Please try again later.',
         directEmail: 'yagateelabalaji@gmail.com',
       };
     }

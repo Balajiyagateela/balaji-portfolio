@@ -14,19 +14,37 @@ const app = express();
 // Trust proxy for rate-limiting behind reverse proxies like Render / Vercel / Nginx
 app.set('trust proxy', 1);
 
-// Configure CORS
-const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(',').map(origin => origin.trim())
-  : ['http://localhost:5173', 'http://localhost:3000', 'http://127.0.0.1:5173'];
+// Configure CORS for local development and production Vercel deployment
+const defaultOrigins = [
+  'https://balaji-portfolio-kappa.vercel.app',
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'http://127.0.0.1:5173',
+  'http://127.0.0.1:3000',
+];
+
+const customOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(',').map(origin => origin.trim()).filter(Boolean)
+  : [];
+
+const allowedOrigins = [...new Set([...defaultOrigins, ...customOrigins])];
 
 app.use(cors({
   origin: (origin, callback) => {
     // Allow requests with no origin (e.g. mobile apps, curl, server-to-server)
     if (!origin) return callback(null, true);
-    if (allowedOrigins.includes('*') || allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') {
+
+    const isVercel = origin.endsWith('.vercel.app');
+    const isAllowed =
+      allowedOrigins.includes('*') ||
+      allowedOrigins.includes(origin) ||
+      isVercel ||
+      process.env.NODE_ENV !== 'production';
+
+    if (isAllowed) {
       return callback(null, true);
     }
-    return callback(new Error('Cross-Origin Request Blocked by CORS policy.'));
+    return callback(new Error(`Cross-Origin Request Blocked by CORS policy for origin: ${origin}`));
   },
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -53,6 +71,7 @@ app.get('/', (req, res) => {
       health: 'GET /api/health',
       contact: 'POST /api/contact',
     },
+    status: 'operational',
     note: 'Stateless backend service. No database storage is utilized.',
   });
 });
@@ -61,21 +80,18 @@ app.get('/', (req, res) => {
 app.use((req, res) => {
   res.status(404).json({
     success: false,
-    error: 'Endpoint not found',
-    requestedUrl: req.originalUrl,
+    error: 'Route not found',
+    path: req.originalUrl,
   });
 });
 
-// Centralized Error Handler
-app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
-  console.error('[Backend Error]:', err.message || err);
-  const status = err.status || 500;
-  res.status(status).json({
+// Global Error Handler
+app.use((err, req, res, next) => {
+  console.error('[Server Error]', err.message);
+  res.status(500).json({
     success: false,
-    error: err.message || 'Internal Server Error',
-    code: err.code || 'SERVER_ERROR',
+    error: err.message || 'Internal server error occurred.',
   });
 });
 
 module.exports = app;
-
