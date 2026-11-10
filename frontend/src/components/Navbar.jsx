@@ -4,15 +4,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { personalDetails } from '../data/portfolioData';
 import { useTheme } from '../context/ThemeContext';
 
-// EXACT 7 navigation items as specified:
-// Home | About | Skills | Experience | Projects | Education | Contact
+// Navigation items:
+// Home | About | Skills | Experience | Projects | Contact
 const navLinks = [
   { name: 'Home', href: '#home' },
   { name: 'About', href: '#about' },
   { name: 'Skills', href: '#skills' },
   { name: 'Experience', href: '#experience' },
   { name: 'Projects', href: '#projects' },
-  { name: 'Education', href: '#education' },
   { name: 'Contact', href: '#contact' },
 ];
 

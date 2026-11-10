@@ -82,7 +82,7 @@ const handleContactSubmit = async (req, res) => {
       success: false,
       code: 'SMTP_SEND_FAILED',
       error: 'Failed to deliver message through SMTP relay.',
-      message: 'There was a temporary problem delivering your message. Please reach out directly to rajbalajiyagateela@gmail.com.',
+      message: `There was a temporary problem delivering your message. Please reach out directly to Balaji Yagateela at ${receiverEmail}.`,
       directEmail: receiverEmail,
     });
   }
